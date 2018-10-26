@@ -35,31 +35,32 @@
         fab:menu_labels_ellipsize="end"
         fab:menu_labels_singleLine="true"
         fab:menu_backgroundColor="#ccffffff"
-        fab:menu_fab_label="Menu label">
+        fab:menu_fab_label="Cancelar">
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/fab1"
+            android:id="@+id/fabAddGrupo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_dialog_email"
-            fab:fab_size="mini"
-            fab:fab_label="Disabled" />
+            android:cropToPadding="false"
+            android:src="@mipmap/ic_group"
+            fab:fab_label="Novo Grupo"
+            fab:fab_size="mini" />
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/fab2"
+            android:id="@+id/fabAddTarefa"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_dialog_email"
-            fab:fab_size="mini"
-            fab:fab_label="Remove button" />
+            android:src="@mipmap/ic_task2"
+            fab:fab_label="Nova Tarefa"
+            fab:fab_size="mini" />
 
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/fab3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_dialog_email"
-            fab:fab_size="mini"
-            fab:fab_label="Restore Button" />
+        <!--<com.github.clans.fab.FloatingActionButton-->
+            <!--android:id="@+id/fab3"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:src="@android:drawable/ic_dialog_email"-->
+            <!--fab:fab_size="mini"-->
+            <!--fab:fab_label="Restore Button" />-->
 
     </com.github.clans.fab.FloatingActionMenu>
 
