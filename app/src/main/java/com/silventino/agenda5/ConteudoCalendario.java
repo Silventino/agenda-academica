@@ -28,12 +28,12 @@ import java.util.List;
 import java.util.concurrent.Executors;
 
 
-public class conteudoCalendario extends Fragment {
+public class ConteudoCalendario extends Fragment {
 
     private MaterialCalendarView calendario;
     private Context c;
 
-    public conteudoCalendario() {
+    public ConteudoCalendario() {
         // Required empty public constructor
     }
 
@@ -63,16 +63,6 @@ public class conteudoCalendario extends Fragment {
         return rootView;
     }
 
-    public void setButton(){
-//        Button b = this.c.findViewById(R.id.btnTeste);
-//        b.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Toast.makeText(c, "OI", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-    }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -93,7 +83,8 @@ public class conteudoCalendario extends Fragment {
         LocalDate temp = LocalDate.now().minusMonths(2);
         final ArrayList<CalendarDay> dates = new ArrayList<>();
         for (int i = 0; i < 30; i++) {
-            final CalendarDay day = CalendarDay.from(temp);
+            Evento e = new Evento(temp.getDayOfMonth(),temp.getMonthValue(),temp.getYear(),0, 0, "Thuza", "Tutu", i);
+            final CalendarDay day = e.getCalendarDay();
             dates.add(day);
             temp = temp.plusDays(5);
         }

@@ -5,16 +5,16 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-public class fragmentPageAdapter extends FragmentPagerAdapter {
+public class FragmentPageAdapter extends FragmentPagerAdapter {
 
     private Context mContext;
-    private conteudoCalendario conteudoCalendario;
-    private conteudoGrupos conteudoGrupos;
+    private ConteudoCalendario conteudoCalendario;
+    private ConteudoGrupos conteudoGrupos;
 
-    public fragmentPageAdapter(Context context, FragmentManager fm) {
+    public FragmentPageAdapter(Context context, FragmentManager fm) {
         super(fm);
-        conteudoCalendario = new conteudoCalendario();
-        conteudoGrupos = new conteudoGrupos();
+        conteudoCalendario = new ConteudoCalendario();
+        conteudoGrupos = new ConteudoGrupos();
         mContext = context;
     }
 
