@@ -1,43 +1,28 @@
 package com.silventino.agenda5;
 
-import android.app.DatePickerDialog;
 import android.content.Context;
 import android.graphics.Color;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.Toast;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
-import org.threeten.bp.LocalDate;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.concurrent.Executors;
-
-
-public class ConteudoCalendario extends Fragment implements DatePickerDialog.OnDateSetListener{
+public class ConteudoCalendario extends Fragment{
 
     private MaterialCalendarView calendario;
-    private Context c;
+    private Context contexto;
     private DecoradorDeDias decorador;
-    private FragmentActivity contexto;
+//    private FragmentActivity contexto;
 
     public ConteudoCalendario() {
         // Required empty public constructor
@@ -52,8 +37,8 @@ public class ConteudoCalendario extends Fragment implements DatePickerDialog.OnD
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_conteudo_calendario, container, false);
-        this.c = inflater.getContext();
-        Toast.makeText(c, "OK", Toast.LENGTH_SHORT).show();
+        this.contexto = inflater.getContext();
+        Toast.makeText(contexto, "OK", Toast.LENGTH_SHORT).show();
         return rootView;
     }
 
@@ -84,22 +69,8 @@ public class ConteudoCalendario extends Fragment implements DatePickerDialog.OnD
             }
         });
 
-        Button teste = view.findViewById(R.id.btn2);
-        final ConteudoCalendario ponteiroThis = this;
-        teste.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DatePickerDialog newFragment = new DatePickerDialog(getActivity(), ponteiroThis, 2018, 10, 12);
-                newFragment.show();
-            }
-        });
-
     }
 
-    @Override
-    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-        Toast.makeText(c, ""+i+"/"+i1+"/"+i2, Toast.LENGTH_SHORT).show();
-    }
 
 //    public void showDatePicker(){
 //
