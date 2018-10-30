@@ -1,5 +1,6 @@
 package com.silventino.agenda5;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
@@ -7,13 +8,16 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.Toast;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -28,11 +32,12 @@ import java.util.List;
 import java.util.concurrent.Executors;
 
 
-public class ConteudoCalendario extends Fragment {
+public class ConteudoCalendario extends Fragment implements DatePickerDialog.OnDateSetListener{
 
     private MaterialCalendarView calendario;
     private Context c;
     private DecoradorDeDias decorador;
+    private FragmentActivity contexto;
 
     public ConteudoCalendario() {
         // Required empty public constructor
@@ -51,6 +56,12 @@ public class ConteudoCalendario extends Fragment {
         Toast.makeText(c, "OK", Toast.LENGTH_SHORT).show();
         return rootView;
     }
+
+//    @Override
+//    public void onAttach(Context context) {
+//        this.contexto = (FragmentActivity) context;
+//        super.onAttach(context);
+//    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -73,9 +84,26 @@ public class ConteudoCalendario extends Fragment {
             }
         });
 
-//        setEvents();
+        Button teste = view.findViewById(R.id.btn2);
+        final ConteudoCalendario ponteiroThis = this;
+        teste.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatePickerDialog newFragment = new DatePickerDialog(getActivity(), ponteiroThis, 2018, 10, 12);
+                newFragment.show();
+            }
+        });
 
     }
+
+    @Override
+    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+        Toast.makeText(c, ""+i+"/"+i1+"/"+i2, Toast.LENGTH_SHORT).show();
+    }
+
+//    public void showDatePicker(){
+//
+//    }
 
 //    public void setEvents(){
 //        LocalDate temp = LocalDate.now().minusMonths(2);
