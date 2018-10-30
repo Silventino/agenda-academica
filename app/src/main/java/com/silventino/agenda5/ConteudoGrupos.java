@@ -8,9 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class conteudoGrupos extends Fragment {
+public class ConteudoGrupos extends Fragment {
 
-    public conteudoGrupos() {
+    public ConteudoGrupos() {
         // Required empty public constructor
     }
 
