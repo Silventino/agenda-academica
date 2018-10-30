@@ -14,12 +14,24 @@ public class DecoradorDeDias implements DayViewDecorator {
 
     public DecoradorDeDias(int cor, Collection<CalendarDay> dias){
         this.cor = cor;
-        this.dias = new HashSet<>(dias);
+        if(dias != null){
+            this.dias = new HashSet<>(dias);
+        }
+        else{
+            this.dias = new HashSet<>();
+        }
     }
 
     @Override
     public boolean shouldDecorate(final CalendarDay dia) {
         return this.dias.contains(dia);
+    }
+
+    public void addDate(CalendarDay dia){
+        this.dias.add(dia);
+    }
+    public void addDate(Collection<CalendarDay> dias){
+        this.dias.addAll(dias);
     }
 
     @Override

@@ -32,6 +32,7 @@ public class ConteudoCalendario extends Fragment {
 
     private MaterialCalendarView calendario;
     private Context c;
+    private DecoradorDeDias decorador;
 
     public ConteudoCalendario() {
         // Required empty public constructor
@@ -40,18 +41,6 @@ public class ConteudoCalendario extends Fragment {
     @Override
     public void onInflate(Context context, AttributeSet attrs, Bundle savedInstanceState) {
         super.onInflate(context, attrs, savedInstanceState);
-
-
-//        calendario = getView().findViewById(R.id.calendarioo);
-////        CalendarDay dia = calendario.getCurrentDate();
-////        CalendarDay dia2 = CalendarDay.from(2018,10,10);
-//
-//        final LocalDate instance = LocalDate.now();
-//        calendario.setSelectedDate(instance);
-//        Log.d("oioioioioioioioio", "oioioiojuuisqhuiwhduihwduih");
-//
-////        Calendar c = Calendar.getInstance();
-//        new ApiSimulator().executeOnExecutor(Executors.newSingleThreadExecutor());
 
     }
 
@@ -66,32 +55,42 @@ public class ConteudoCalendario extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         calendario = view.findViewById(R.id.calendarioo);
+        decorador = new DecoradorDeDias(Color.RED, null);
+        calendario.addDecorator(decorador);
+
+
         Button b = view.findViewById(R.id.btnTeste);
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(c, "OI", Toast.LENGTH_SHORT).show();
+                CalendarDay diaSelecionado = calendario.getSelectedDate();
+                if(diaSelecionado != null){
+                    decorador.addDate(diaSelecionado);
+                    calendario.invalidateDecorators();
+                }
             }
         });
 
-        setEvents();
+//        setEvents();
 
     }
 
-    public void setEvents(){
-        LocalDate temp = LocalDate.now().minusMonths(2);
-        final ArrayList<CalendarDay> dates = new ArrayList<>();
-        for (int i = 0; i < 30; i++) {
-            Evento e = new Evento(temp.getDayOfMonth(),temp.getMonthValue(),temp.getYear(),0, 0, "Thuza", "Tutu", i);
-            final CalendarDay day = e.getCalendarDay();
-            dates.add(day);
-            temp = temp.plusDays(5);
-        }
-        calendario.addDecorator(new DecoradorDeDias(Color.RED, dates));
-        Log.d("DEBUG", "CHEGUEI");
-
-    }
+//    public void setEvents(){
+//        LocalDate temp = LocalDate.now().minusMonths(2);
+//        final ArrayList<CalendarDay> dates = new ArrayList<>();
+//        for (int i = 0; i < 30; i++) {
+//            Evento e = new Evento(temp.getDayOfMonth(),temp.getMonthValue(),temp.getYear(),0, 0, "Thuza", "Tutu", i);
+//            final CalendarDay day = e.getCalendarDay();
+//            dates.add(day);
+//            temp = temp.plusDays(5);
+//        }
+//        decorador.addDate(dates);
+//        calendario.addDecorator(decorador);
+//        Log.d("DEBUG", "CHEGUEI");
+//
+//    }
 
 
 }
