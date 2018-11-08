@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/campoTitutlo"
+        android:id="@+id/compoTitulo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -27,27 +27,33 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginRight="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
         android:inputType="date"
         android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/txtData"
-        app:layout_constraintTop_toBottomOf="@+id/campoTitutlo" />
+        app:layout_constraintTop_toBottomOf="@+id/compoTitulo"
+        android:focusableInTouchMode="false" />
 
     <EditText
         android:id="@+id/campoHora"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginRight="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
         android:inputType="time"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/txtHora"
-        app:layout_constraintTop_toBottomOf="@+id/campoData" />
+        app:layout_constraintTop_toBottomOf="@+id/campoData"
+        android:focusableInTouchMode="false" />
 
     <EditText
         android:id="@+id/campoDescricao"
@@ -103,8 +109,8 @@
 
     <TextView
         android:id="@+id/txtData"
-        android:layout_width="80dp"
-        android:layout_height="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
@@ -112,13 +118,14 @@
         android:text="@string/txt_data"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="@+id/campoData"
+        app:layout_constraintEnd_toStartOf="@+id/campoData"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/campoData" />
 
     <TextView
         android:id="@+id/txtHora"
-        android:layout_width="80dp"
-        android:layout_height="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
@@ -130,11 +137,11 @@
         app:layout_constraintTop_toTopOf="@+id/campoHora" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btnAdicionar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:text="Button"
+        android:text="Adicionar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -147,8 +154,23 @@
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:text="Grupo"
-        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintBottom_toTopOf="@+id/btnAdicionar"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Spinner
+        android:id="@+id/seletorGrupos"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/checkBox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/checkBox"
+        app:layout_constraintTop_toTopOf="@+id/checkBox" />
 
 
 </android.support.constraint.ConstraintLayout>

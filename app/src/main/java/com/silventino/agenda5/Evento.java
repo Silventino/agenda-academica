@@ -2,7 +2,9 @@ package com.silventino.agenda5;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
-public class Evento {
+import java.io.Serializable;
+
+public class Evento implements Serializable{
     private int dia;
     private int mes;
     private int ano;
