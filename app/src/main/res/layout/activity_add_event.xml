@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/compoTitulo"
+        android:id="@+id/campoTitulo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -36,7 +36,7 @@
         android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/txtData"
-        app:layout_constraintTop_toBottomOf="@+id/compoTitulo"
+        app:layout_constraintTop_toBottomOf="@+id/campoTitulo"
         android:focusableInTouchMode="false" />
 
     <EditText

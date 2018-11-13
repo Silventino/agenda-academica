@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,8 @@ import android.widget.Toast;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+
+import java.util.ArrayList;
 
 
 public class ConteudoCalendario extends Fragment{
@@ -42,11 +45,16 @@ public class ConteudoCalendario extends Fragment{
         return rootView;
     }
 
-//    @Override
-//    public void onAttach(Context context) {
-//        this.contexto = (FragmentActivity) context;
-//        super.onAttach(context);
-//    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        ArrayList<Evento> eventos = BancoDeDados.getInstancia().getEventos();
+        for(Evento evento : eventos){
+            decorador.addDate(evento.getCalendarDay());
+        }
+        calendario.invalidateDecorators();
+
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -72,9 +80,7 @@ public class ConteudoCalendario extends Fragment{
     }
 
 
-//    public void showDatePicker(){
-//
-//    }
+
 
 //    public void setEvents(){
 //        LocalDate temp = LocalDate.now().minusMonths(2);

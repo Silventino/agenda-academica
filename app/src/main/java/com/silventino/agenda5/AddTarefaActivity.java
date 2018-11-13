@@ -2,11 +2,14 @@ package com.silventino.agenda5;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
@@ -16,6 +19,18 @@ public class AddTarefaActivity extends AppCompatActivity implements DatePickerDi
 
     private EditText campoData;
     private EditText campoHora;
+    private EditText campoTitulo;
+    private EditText campoDescricao;
+    private Button btnAdicionar;
+
+    private int diaSelecionado;
+    private int mesSelecionado;
+    private int anoSelecionado;
+
+    private int horaSelecionada;
+    private int minutoSelecionado;
+
+    private BancoDeDados bancoDeDados;
 
 
 
@@ -24,10 +39,23 @@ public class AddTarefaActivity extends AppCompatActivity implements DatePickerDi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_event);
 
+//        Intent intent = getIntent();
+        bancoDeDados = BancoDeDados.getInstancia();
+
         campoData = findViewById(R.id.campoData);
         campoHora = findViewById(R.id.campoHora);
+        campoDescricao = findViewById(R.id.campoDescricao);
+        campoTitulo = findViewById(R.id.campoTitulo);
         campoData.setInputType(InputType.TYPE_NULL);
+        btnAdicionar = findViewById(R.id.btnAdicionar);
 
+        btnAdicionar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bancoDeDados.addEvento(criarEvento());
+                finish();
+            }
+        });
 
         final AddTarefaActivity ponteiroThis = this;
         campoData.setOnClickListener(new View.OnClickListener() {
@@ -48,11 +76,23 @@ public class AddTarefaActivity extends AppCompatActivity implements DatePickerDi
 
     }
 
+    public Evento criarEvento(){
+        String titulo = campoTitulo.getText().toString();
+        String descricao = campoDescricao.getText().toString();
+//        Log.i("UAUUUUUUUU", titulo + "\n" + descricao + "\n" + diaSelecionado + "/" + mesSelecionado + "/" + anoSelecionado + "\n" + horaSelecionada + ":" + minutoSelecionado);
+        Evento novoEvento = new Evento(diaSelecionado, mesSelecionado, anoSelecionado, horaSelecionada, minutoSelecionado, titulo, descricao);
+        return novoEvento;
+
+    }
+
     @Override
-    public void onTimeSet(TimePicker timePicker, int i, int i1) {
-        String minutos = String.format("%02d", i1);
-        String horas = String.format("%02d", i);
-        campoHora.setText(horas + ":" + minutos);
+    public void onTimeSet(TimePicker timePicker, int horas, int minutos) {
+        String minutosString = String.format("%02d", minutos);
+        String horasString = String.format("%02d", horas);
+        campoHora.setText(horasString + ":" + minutosString);
+        horaSelecionada = horas;
+        minutoSelecionado = minutos;
+
     }
 
     @Override
@@ -60,6 +100,9 @@ public class AddTarefaActivity extends AppCompatActivity implements DatePickerDi
         mes++;
         Toast.makeText(this, ""+ano+"/"+mes+"/"+dia, Toast.LENGTH_SHORT).show();
         campoData.setText(dia+"/"+mes+"/"+ano);
+        this.diaSelecionado = dia;
+        this.mesSelecionado = mes;
+        this.anoSelecionado = ano;
 
     }
 }
