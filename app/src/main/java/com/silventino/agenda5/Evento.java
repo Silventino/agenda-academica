@@ -1,5 +1,7 @@
 package com.silventino.agenda5;
 
+import android.util.Log;
+
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import java.io.Serializable;
@@ -12,10 +14,10 @@ public class Evento implements Serializable{
     private int minuto;
     private String titulo;
     private String descricao;
-    // private Grupo grupo;
+    private Grupo grupo;
     private int id;
 
-    public Evento(int dia, int mes, int ano, int hora, int minuto, String titulo, String descricao, int id) {
+    public Evento(int dia, int mes, int ano, int hora, int minuto, String titulo, String descricao) {
         this.dia = dia;
         this.mes = mes;
         this.ano = ano;
@@ -23,11 +25,22 @@ public class Evento implements Serializable{
         this.minuto = minuto;
         this.titulo = titulo;
         this.descricao = descricao;
-        this.id = id;
+        this.id = BancoDeDados.getProximoIdEvento();
+    }
+
+    public boolean dataIgual(int dia, int mes, int ano){
+        if(this.ano == ano && this.mes == mes && this.dia == dia){
+            return true;
+        }
+        return false;
     }
 
     public CalendarDay getCalendarDay(){
         return CalendarDay.from(this.ano, this.mes, this.dia);
+    }
+
+    public void setGrupo(Grupo g){
+        this.grupo = g;
     }
 
     public int getDia() {

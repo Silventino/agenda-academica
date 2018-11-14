@@ -23,6 +23,10 @@
             android:name=".AddTarefaActivity"
             android:label="@string/app_name">
         </activity>
+        <activity
+            android:name=".VisualizarGrupoActivity"
+            android:label="@string/app_name">
+        </activity>
     </application>
 
 </manifest>

@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ConteudoCalendario">
 
-    <!-- TODO: Update blank fragment layout -->
 
     <!--<CalendarView-->
         <!--android:id="@+id/calendarView"-->
@@ -15,24 +14,32 @@
         <!--app:layout_constraintEnd_toEndOf="parent"-->
         <!--app:layout_constraintStart_toStartOf="parent"-->
         <!--app:layout_constraintTop_toTopOf="parent" />-->
-    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/calendarioo"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:mcv_showOtherDates="all"
-        app:mcv_selectionColor="@color/colorSelectedDay"
-        app:mcv_tileHeight="35dp"
-        />
+        android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/btnTeste"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:text="Marcar Dia"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+                android:id="@+id/calendarioo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:mcv_selectionColor="@color/colorSelectedDay"
+                app:mcv_showOtherDates="all"
+                app:mcv_tileHeight="35dp">
+
+            </com.prolificinteractive.materialcalendarview.MaterialCalendarView>
+
+            <ListView
+                android:id="@+id/listaTarefas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+    </ScrollView>
+
 
 </android.support.constraint.ConstraintLayout>
