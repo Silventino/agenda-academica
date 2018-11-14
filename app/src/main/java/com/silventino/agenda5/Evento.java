@@ -28,6 +28,13 @@ public class Evento implements Serializable{
         this.id = BancoDeDados.getProximoIdEvento();
     }
 
+    public boolean dataIgual(int dia, int mes, int ano){
+        if(this.ano == ano && this.mes == mes && this.dia == dia){
+            return true;
+        }
+        return false;
+    }
+
     public CalendarDay getCalendarDay(){
         return CalendarDay.from(this.ano, this.mes, this.dia);
     }
