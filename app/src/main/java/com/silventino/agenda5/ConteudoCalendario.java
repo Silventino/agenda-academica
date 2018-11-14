@@ -73,7 +73,7 @@ public class ConteudoCalendario extends Fragment{
     public void refreshListaTarefas(CalendarDay data){
         ArrayList<Evento> eventosDoDia = BancoDeDados.getInstancia().getEventosDoDia(data.getDay(), data.getMonth(), data.getYear());
         Log.i("asdasdasd", eventosDoDia.toString());
-        ListViewAdapter lva = new ListViewAdapter(eventosDoDia, calendario.getContext());
+        ListViewAdapterEvento lva = new ListViewAdapterEvento(eventosDoDia, calendario.getContext());
         listaTarefas.setAdapter(lva);
         lva.notifyDataSetChanged();
         setListViewHeightBasedOnChildren();
@@ -112,7 +112,7 @@ public class ConteudoCalendario extends Fragment{
 //        es.add(new Evento(12,12,1998, 12, 12, "uau!", "Doze"));
 //        es.add(new Evento(12,12,1998, 12, 12, "IUIUNINI uau!", "Doze"));
 
-        ListViewAdapter lva = new ListViewAdapter(es, view.getContext());
+        ListViewAdapterEvento lva = new ListViewAdapterEvento(es, view.getContext());
         listaTarefas.setAdapter(lva);
         listaTarefas.setFocusable(false);
 

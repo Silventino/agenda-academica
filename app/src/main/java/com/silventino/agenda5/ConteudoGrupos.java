@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+
 public class ConteudoGrupos extends Fragment {
 
     private ListView listaGrupos;
@@ -29,5 +31,11 @@ public class ConteudoGrupos extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         listaGrupos = view.findViewById(R.id.listaGrupos);
+
+        ArrayList<Grupo> gs = BancoDeDados.getInstancia().getGrupos();
+
+        ListViewAdapterGrupo lva = new ListViewAdapterGrupo(gs, view.getContext());
+        listaGrupos.setAdapter(lva);
+        listaGrupos.setFocusable(false);
     }
 }

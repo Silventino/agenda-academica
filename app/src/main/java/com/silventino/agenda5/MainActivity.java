@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity
         // banco de dados
         bancoDeDados = BancoDeDados.getInstancia();
         bancoDeDados.addEvento(new Evento(14,11,2018,12,00, "Estudar para prova de compiladores", "vai ser dificil"));
+        bancoDeDados.addGrupo(new Grupo("Compiladores"));
         //
 
         // arrumando as views que sera mostradas de acordo com a tab selecionada

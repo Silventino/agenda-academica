@@ -1,6 +1,7 @@
 package com.silventino.agenda5;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,19 +12,19 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class ListViewAdapter extends ArrayAdapter<Evento> {
+public class ListViewAdapterGrupo extends ArrayAdapter<Grupo> {
     private static class ViewHolder {
-        TextView txtTitulo;
-        TextView txtHora;
+        TextView txtNome;
         ImageView info;
+        ImageView imgGrupo;
     }
 
-    private ArrayList<Evento> listaEventos;
+    private ArrayList<Grupo> listaGrupos;
     private Context context;
 
-    public ListViewAdapter(ArrayList<Evento> listaEventos, Context context) {
-        super(context, R.layout.row_tarefas, listaEventos);
-        this.listaEventos = listaEventos;
+    public ListViewAdapterGrupo(ArrayList<Grupo> listaEventos, Context context) {
+        super(context, R.layout.row_grupos, listaEventos);
+        this.listaGrupos = listaEventos;
         this.context = context;
     }
 
@@ -31,7 +32,7 @@ public class ListViewAdapter extends ArrayAdapter<Evento> {
     @Override
     public View getView(int posicao, View convertView, ViewGroup pai) {
         // Get the data item for this position
-        Evento evento = getItem(posicao);
+        Grupo grupo = getItem(posicao);
         // Check if an existing view is being reused, otherwise inflate the view
         ViewHolder viewHolder;
 
@@ -39,24 +40,23 @@ public class ListViewAdapter extends ArrayAdapter<Evento> {
 
         if (convertView == null) {
 
-            viewHolder = new ViewHolder();
+            viewHolder = new ListViewAdapterGrupo.ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
-            convertView = inflater.inflate(R.layout.row_tarefas, pai, false);
-            viewHolder.txtTitulo = convertView.findViewById(R.id.titulo);
-            viewHolder.txtHora = convertView.findViewById(R.id.hora);
-            viewHolder.info = convertView.findViewById(R.id.item_info);
+            convertView = inflater.inflate(R.layout.row_grupos, pai, false);
+            viewHolder.txtNome = convertView.findViewById(R.id.nomeGrupo);
+            viewHolder.info = convertView.findViewById(R.id.item_info_grupo);
+            viewHolder.imgGrupo = convertView.findViewById(R.id.imgGrupo);
 
             result=convertView;
 
             convertView.setTag(viewHolder);
         } else {
-            viewHolder = (ViewHolder) convertView.getTag();
+            viewHolder = (ListViewAdapterGrupo.ViewHolder) convertView.getTag();
             result=convertView;
         }
 
 
-        viewHolder.txtTitulo.setText(evento.getTitulo());
-        viewHolder.txtHora.setText(evento.getHora() + ":" + evento.getMinuto());
+        viewHolder.txtNome.setText(grupo.getNome());
         viewHolder.info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -64,6 +64,7 @@ public class ListViewAdapter extends ArrayAdapter<Evento> {
             }
         });
         viewHolder.info.setTag(posicao);
+        viewHolder.imgGrupo.setTag(posicao);
         // Return the completed view to render on screen
         return convertView;
     }
