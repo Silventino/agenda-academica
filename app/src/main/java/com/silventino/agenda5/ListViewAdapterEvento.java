@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class ListViewAdapterEvento extends ArrayAdapter<Evento> {
@@ -56,7 +57,16 @@ public class ListViewAdapterEvento extends ArrayAdapter<Evento> {
 
 
         viewHolder.txtTitulo.setText(evento.getTitulo());
-        viewHolder.txtHora.setText(evento.getHora() + ":" + evento.getMinuto());
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+
+        String minuto = "";
+        if(evento.getMinuto() < 10) {
+            minuto = "0" + evento.getMinuto();
+        } else {
+            minuto = evento.getMinuto() + "";
+        }
+
+        viewHolder.txtHora.setText(evento.getHora() + ":" + minuto);
         viewHolder.info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

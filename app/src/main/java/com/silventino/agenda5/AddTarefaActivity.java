@@ -2,6 +2,7 @@ package com.silventino.agenda5;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -100,10 +101,21 @@ public class AddTarefaActivity extends AppCompatActivity implements DatePickerDi
             }
             seletorGrupos.setSelection(indiceGrupoSelecionado);
         }
-
         btnAdicionar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(campoTitulo.getText().toString().equals("")) {
+                    Toast.makeText(getApplicationContext(), "O título não pode ser vazio", Toast.LENGTH_SHORT);
+                    return;
+                }
+                if(campoData.getText().toString().equals("")) {
+                    Toast.makeText(view.getContext(), "A data não pode ser vazio", Toast.LENGTH_SHORT);
+                    return;
+                }
+                if(campoHora.getText().toString().equals("")) {
+                    Toast.makeText(view.getContext(), "A hora não pode ser vazio", Toast.LENGTH_SHORT);
+                    return;
+                }
                 if(checkBox.isChecked()){
                     Grupo grupoSelecionado = grupos.get(seletorGrupos.getSelectedItemPosition());
                     Evento e = criarEvento();

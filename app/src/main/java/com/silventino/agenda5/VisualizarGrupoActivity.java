@@ -22,6 +22,8 @@ import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
+import org.threeten.bp.LocalDate;
+
 import java.util.ArrayList;
 
 public class VisualizarGrupoActivity extends AppCompatActivity {
@@ -71,7 +73,7 @@ public class VisualizarGrupoActivity extends AppCompatActivity {
         });
 
         listaTarefasGrupo = findViewById(R.id.listaTarefasGrupo);
-
+        calendario.setSelectedDate(LocalDate.now());
     }
 
     // seta a setinha pra voltar
