@@ -14,7 +14,7 @@ public class Evento implements Serializable{
     private int minuto;
     private String titulo;
     private String descricao;
-    // private Grupo grupo;
+    private Grupo grupo;
     private int id;
 
     public Evento(int dia, int mes, int ano, int hora, int minuto, String titulo, String descricao) {
@@ -37,6 +37,10 @@ public class Evento implements Serializable{
 
     public CalendarDay getCalendarDay(){
         return CalendarDay.from(this.ano, this.mes, this.dia);
+    }
+
+    public void setGrupo(Grupo g){
+        this.grupo = g;
     }
 
     public int getDia() {

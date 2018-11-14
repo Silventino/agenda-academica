@@ -17,7 +17,7 @@ public class Grupo {
 
 
         this.participa = true;
-        
+
 
         eventos.add(new Evento(12,11,2018, 12,12,"estudos", "top"));
         eventos.add(new Evento(12,11,2018, 12,12,"estudos", "top"));
@@ -43,7 +43,7 @@ public class Grupo {
         return eventosDoDia;
     }
 
-    public void adicionarEvento(Evento e){
+    public void addEvento(Evento e){
         eventos.add(e);
     }
 
@@ -72,6 +72,12 @@ public class Grupo {
     }
 
     public void setParticipa(boolean participa) {
+        if(participa == true){
+            for(Evento e : this.eventos){
+                // TODO fazer um add eventoS
+                BancoDeDados.getInstancia().addEvento(e);
+            }
+        }
         this.participa = participa;
     }
 }

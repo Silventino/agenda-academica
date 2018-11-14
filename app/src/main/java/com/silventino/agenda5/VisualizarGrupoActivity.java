@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
@@ -32,6 +33,9 @@ public class VisualizarGrupoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grupo);
 
+
+
+
         int idGrupo = getIntent().getIntExtra("idGrupo", -1);
         Toast.makeText(this, idGrupo+"", Toast.LENGTH_SHORT).show();
         grupo = BancoDeDados.getInstancia().getGrupoPorId(idGrupo);
@@ -40,6 +44,10 @@ public class VisualizarGrupoActivity extends AppCompatActivity {
             finish();
         }
 
+        // coloca a setinha no toolbar e o nome do grupo
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle(grupo.getNome());
 
         FloatingActionButton btnAddTarefa = findViewById(R.id.fabAddTarefaGrupo);
         btnAddTarefa.setOnClickListener(new View.OnClickListener() {
@@ -62,6 +70,17 @@ public class VisualizarGrupoActivity extends AppCompatActivity {
 
         listaTarefasGrupo = findViewById(R.id.listaTarefasGrupo);
 
+    }
+
+    // seta a setinha pra voltar
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // handle arrow click here
+        if (item.getItemId() == android.R.id.home) {
+            finish(); // close this activity and return to preview activity (if there is any)
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

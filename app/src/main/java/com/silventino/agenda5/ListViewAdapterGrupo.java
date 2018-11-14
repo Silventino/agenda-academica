@@ -1,11 +1,12 @@
 package com.silventino.agenda5;
 
 import android.content.Context;
-import android.util.Log;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 public class ListViewAdapterGrupo extends ArrayAdapter<Grupo> {
     private static class ViewHolder {
         TextView txtNome;
-        ImageView info;
+        Button btnEntrar;
         ImageView imgGrupo;
     }
 
@@ -32,9 +33,9 @@ public class ListViewAdapterGrupo extends ArrayAdapter<Grupo> {
     @Override
     public View getView(int posicao, View convertView, ViewGroup pai) {
         // Get the data item for this position
-        Grupo grupo = getItem(posicao);
+        final Grupo grupo = getItem(posicao);
         // Check if an existing view is being reused, otherwise inflate the view
-        ViewHolder viewHolder;
+        final ViewHolder viewHolder;
 
         final View result;
 
@@ -44,7 +45,7 @@ public class ListViewAdapterGrupo extends ArrayAdapter<Grupo> {
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.row_grupos, pai, false);
             viewHolder.txtNome = convertView.findViewById(R.id.nomeGrupo);
-            viewHolder.info = convertView.findViewById(R.id.item_info_grupo);
+            viewHolder.btnEntrar = convertView.findViewById(R.id.btnEntrar);
             viewHolder.imgGrupo = convertView.findViewById(R.id.imgGrupo);
 
             result=convertView;
@@ -57,13 +58,21 @@ public class ListViewAdapterGrupo extends ArrayAdapter<Grupo> {
 
 
         viewHolder.txtNome.setText(grupo.getNome());
-        viewHolder.info.setOnClickListener(new View.OnClickListener() {
+        viewHolder.btnEntrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "UAU! QUE LOUCO MAN", Toast.LENGTH_SHORT).show();
+                grupo.setParticipa(true);
+                viewHolder.btnEntrar.setVisibility(View.INVISIBLE);
+                viewHolder.btnEntrar.setClickable(false);
+                Intent i = new Intent(view.getContext(), VisualizarGrupoActivity.class);
+                i.putExtra("idGrupo", grupo.getId());
+                view.getContext().startActivity(i);
+                // TODO abrir grupo ao entrar
+                Toast.makeText(context, "Você entrou no grupo! Clique nele para acessá-lo", Toast.LENGTH_SHORT).show();
+
             }
         });
-        viewHolder.info.setTag(posicao);
+        viewHolder.btnEntrar.setTag(posicao);
         viewHolder.imgGrupo.setTag(posicao);
         // Return the completed view to render on screen
         return convertView;

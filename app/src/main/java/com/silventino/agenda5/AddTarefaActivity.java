@@ -60,7 +60,7 @@ public class AddTarefaActivity extends AppCompatActivity implements DatePickerDi
         btnAdicionar = findViewById(R.id.btnAdicionar);
 
         // TODO fazer essa funcao receber um usuario cadastrado
-        ArrayList<Grupo> grupos = BancoDeDados.getInstancia().getMeusGrupos(-1);
+        final ArrayList<Grupo> grupos = BancoDeDados.getInstancia().getMeusGrupos(-1);
 
         ArrayList<String> nomeGrupos = new ArrayList<>();
         for(int i = 0; i < grupos.size(); i++) {
@@ -87,9 +87,10 @@ public class AddTarefaActivity extends AppCompatActivity implements DatePickerDi
             }
         });
 
+
         if(idGrupo > -1) {
-            checkBox.setChecked(true);
             int indiceGrupoSelecionado = -1;
+            checkBox.setChecked(true);
             for(int i = 0; i < grupos.size() && indiceGrupoSelecionado < 0; i++) {
                 if(idGrupo == grupos.get(i).getId()) {
                     indiceGrupoSelecionado = i;
@@ -103,8 +104,18 @@ public class AddTarefaActivity extends AppCompatActivity implements DatePickerDi
         btnAdicionar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                bancoDeDados.addEvento(criarEvento());
+                if(checkBox.isChecked()){
+                    Grupo grupoSelecionado = grupos.get(seletorGrupos.getSelectedItemPosition());
+                    Evento e = criarEvento();
+                    e.setGrupo(grupoSelecionado);
+                    grupoSelecionado.addEvento(e);
+                    BancoDeDados.getInstancia().addEvento(e);
+                }
+                else{
+                    bancoDeDados.addEvento(criarEvento());
+                }
                 finish();
+
             }
         });
 
