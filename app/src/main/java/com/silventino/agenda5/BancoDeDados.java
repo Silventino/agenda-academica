@@ -26,6 +26,14 @@ public class BancoDeDados{
         return INSTANCIA;
     }
 
+    public Grupo getGrupoPorId(int id){
+        for(Grupo grupo : grupos){
+            if(grupo.getId() == id){
+                return grupo;
+            }
+        }
+        return null;
+    }
 
     public void addEvento(Evento e){
         this.eventos.add(e);
@@ -43,6 +51,16 @@ public class BancoDeDados{
             }
         }
         return eventosDoDia;
+    }
+
+    public ArrayList<Grupo> getMeusGrupos(int idUsuario) {
+        ArrayList<Grupo> gruposParticipando = new ArrayList<>();
+        for(Grupo grupo : grupos) {
+            if(grupo.participaDoGrupo()) {
+                gruposParticipando.add(grupo);
+            }
+        }
+        return gruposParticipando;
     }
 
     public static int getProximoIdEvento(){

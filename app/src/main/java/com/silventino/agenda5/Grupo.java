@@ -13,7 +13,34 @@ public class Grupo {
         this.id = BancoDeDados.getProximoIdGrupo();
         this.nome = nome;
         this.eventos = new ArrayList<>();
-        this.participa = false;
+//        this.participa = false;
+
+
+        this.participa = true;
+        
+
+        eventos.add(new Evento(12,11,2018, 12,12,"estudos", "top"));
+        eventos.add(new Evento(12,11,2018, 12,12,"estudos", "top"));
+        eventos.add(new Evento(12,11,2018, 12,12,"estudos", "top"));
+        eventos.add(new Evento(12,11,2018, 12,12,"estudos", "top"));
+        eventos.add(new Evento(12,11,2018, 12,12,"estudos", "top"));
+        eventos.add(new Evento(12,11,2018, 12,12,"estudos", "top"));
+        eventos.add(new Evento(12,11,2018, 12,12,"estudos", "top"));
+        eventos.add(new Evento(12,11,2018, 12,12,"estudos", "top"));
+        eventos.add(new Evento(12,11,2018, 12,12,"estudos", "top"));
+        eventos.add(new Evento(12,11,2018, 12,12,"estudos989898", "top"));
+        eventos.add(new Evento(14,11,2018, 12,12,"estudos2", "top"));
+        eventos.add(new Evento(12,11,2018, 12,12,"estudos3", "top"));
+    }
+
+    public ArrayList<Evento> getEventosDoDia(int dia, int mes, int ano){
+        ArrayList<Evento> eventosDoDia = new ArrayList<>();
+        for(Evento evento : eventos){
+            if(evento.dataIgual(dia, mes, ano)){
+                eventosDoDia.add(evento);
+            }
+        }
+        return eventosDoDia;
     }
 
     public void adicionarEvento(Evento e){
@@ -40,7 +67,7 @@ public class Grupo {
         return eventos;
     }
 
-    public boolean isParticipa() {
+    public boolean participaDoGrupo() {
         return participa;
     }
 

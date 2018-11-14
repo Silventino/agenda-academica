@@ -9,11 +9,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class AddTarefaActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
@@ -30,6 +36,9 @@ public class AddTarefaActivity extends AppCompatActivity implements DatePickerDi
     private int horaSelecionada;
     private int minutoSelecionado;
 
+    private CheckBox checkBox;
+    private Spinner seletorGrupos;
+
     private BancoDeDados bancoDeDados;
 
 
@@ -39,7 +48,8 @@ public class AddTarefaActivity extends AppCompatActivity implements DatePickerDi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_event);
 
-//        Intent intent = getIntent();
+        int idGrupo = getIntent().getIntExtra("idGrupo", -1);
+
         bancoDeDados = BancoDeDados.getInstancia();
 
         campoData = findViewById(R.id.campoData);
@@ -49,6 +59,47 @@ public class AddTarefaActivity extends AppCompatActivity implements DatePickerDi
         campoData.setInputType(InputType.TYPE_NULL);
         btnAdicionar = findViewById(R.id.btnAdicionar);
 
+        // TODO fazer essa funcao receber um usuario cadastrado
+        ArrayList<Grupo> grupos = BancoDeDados.getInstancia().getMeusGrupos(-1);
+
+        ArrayList<String> nomeGrupos = new ArrayList<>();
+        for(int i = 0; i < grupos.size(); i++) {
+            nomeGrupos.add(grupos.get(i).getNome());
+        }
+
+
+        // TODO fazer adapter para o spinner
+        seletorGrupos = findViewById(R.id.seletorGrupos);
+        ArrayAdapter<String> adapterSeletorGrupos = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, nomeGrupos);
+        adapterSeletorGrupos.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        seletorGrupos.setAdapter(adapterSeletorGrupos);
+
+        checkBox = findViewById(R.id.checkBox);
+
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if(checked){
+                    seletorGrupos.setVisibility(View.VISIBLE);
+                    return;
+                }
+                seletorGrupos.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        if(idGrupo > -1) {
+            checkBox.setChecked(true);
+            int indiceGrupoSelecionado = -1;
+            for(int i = 0; i < grupos.size() && indiceGrupoSelecionado < 0; i++) {
+                if(idGrupo == grupos.get(i).getId()) {
+                    indiceGrupoSelecionado = i;
+                }
+                Log.i("valorRRRRRR de I", i + "");
+                Log.i("nomeEEEEEEEEE", grupos.get(i).getNome());
+            }
+            seletorGrupos.setSelection(indiceGrupoSelecionado);
+        }
+
         btnAdicionar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -56,6 +107,8 @@ public class AddTarefaActivity extends AppCompatActivity implements DatePickerDi
                 finish();
             }
         });
+
+
 
         final AddTarefaActivity ponteiroThis = this;
         campoData.setOnClickListener(new View.OnClickListener() {
