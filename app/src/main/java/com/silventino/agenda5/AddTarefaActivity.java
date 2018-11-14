@@ -114,6 +114,7 @@ public class AddTarefaActivity extends AppCompatActivity implements DatePickerDi
                 else{
                     bancoDeDados.addEvento(criarEvento());
                 }
+                Toast.makeText(getApplicationContext(), "Tarefa agendada", Toast.LENGTH_SHORT).show();
                 finish();
 
             }

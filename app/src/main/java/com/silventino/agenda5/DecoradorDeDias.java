@@ -34,6 +34,7 @@ public class DecoradorDeDias implements DayViewDecorator {
         this.dias.addAll(dias);
     }
 
+
     @Override
     public void decorate(DayViewFacade dayViewFacade) {
         dayViewFacade.addSpan(new DotSpan(5, this.cor));

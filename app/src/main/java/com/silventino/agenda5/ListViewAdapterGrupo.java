@@ -58,6 +58,15 @@ public class ListViewAdapterGrupo extends ArrayAdapter<Grupo> {
 
 
         viewHolder.txtNome.setText(grupo.getNome());
+
+        if(grupo.participaDoGrupo()) {
+            viewHolder.btnEntrar.setVisibility(View.INVISIBLE);
+            viewHolder.btnEntrar.setClickable(false);
+        } else {
+            viewHolder.btnEntrar.setVisibility(View.VISIBLE);
+            viewHolder.btnEntrar.setClickable(true);
+        }
+
         viewHolder.btnEntrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,7 +86,6 @@ public class ListViewAdapterGrupo extends ArrayAdapter<Grupo> {
         // Return the completed view to render on screen
         return convertView;
     }
-
 
 
 }

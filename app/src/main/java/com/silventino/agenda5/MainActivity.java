@@ -11,10 +11,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
@@ -93,7 +95,22 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.activity_main_drawer, menu);
+
+//        MenuItem itemNavCamera = menu.findItem(R.id.nav_camera);
+//        MenuItem itemNavGallery = menu.findItem(R.id.nav_gallery);
+//        MenuItem itemNavManage= menu.findItem(R.id.nav_manage);
+//        MenuItem itemNavSlideShow = menu.findItem(R.id.nav_slideshow);
+//        MenuItem itemNavShare = menu.findItem(R.id.nav_share);
+//        MenuItem itemNavSend = menu.findItem(R.id.nav_send);
+//
+//        itemNavCamera.setActionView(R.layout.activity_main);
+//        itemNavCamera.getActionView().setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Toast.makeText(view.getContext(), "Função não implementada", Toast.LENGTH_SHORT);
+//            }
+//        });
         return true;
     }
 
@@ -106,11 +123,13 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Toast.makeText(getApplicationContext(), "Função não implementada", Toast.LENGTH_SHORT);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -118,18 +137,28 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        switch (id) {
+            case R.id.nav_camera:
+                // Handle the camera action
+                Toast.makeText(this, "Função não implementada", Toast.LENGTH_SHORT);
+                break;
+            case R.id.nav_gallery:
+                Toast.makeText(this, "Função não implementada", Toast.LENGTH_SHORT);
+                break;
+            case R.id.nav_slideshow:
+                Toast.makeText(this, "Função não implementada", Toast.LENGTH_SHORT);
+                break;
+            case R.id.nav_manage:
+                Toast.makeText(this, "Função não implementada", Toast.LENGTH_SHORT);
+                break;
+            case R.id.nav_share:
+                Toast.makeText(this, "Função não implementada", Toast.LENGTH_SHORT);
+                break;
+            case R.id.nav_send:
+                Toast.makeText(this, "Função não implementada", Toast.LENGTH_SHORT);
+                break;
+            default:
+                Toast.makeText(this, "Função não implementada", Toast.LENGTH_SHORT);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

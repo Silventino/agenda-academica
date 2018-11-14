@@ -39,7 +39,7 @@ public class VisualizarGrupoActivity extends AppCompatActivity {
 
 
         int idGrupo = getIntent().getIntExtra("idGrupo", -1);
-        Toast.makeText(this, idGrupo+"", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, idGrupo+"", Toast.LENGTH_SHORT).show();
         grupo = BancoDeDados.getInstancia().getGrupoPorId(idGrupo);
         if(grupo == null){
             Toast.makeText(this, "Erro ao procurar grupo", Toast.LENGTH_SHORT).show();
@@ -78,15 +78,17 @@ public class VisualizarGrupoActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // handle arrow click here
-        if (item.getItemId() == android.R.id.home) {
-            finish(); // close this activity and return to preview activity (if there is any)
-        }
+//        if (item.getItemId() == android.R.id.home) {
+//            finish(); // close this activity and return to preview activity (if there is any)
+//        }
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 return true;
             case R.id.sair:
-                Toast.makeText(this, "Em breve", Toast.LENGTH_SHORT).show();
+                this.grupo.setParticipa(false);
+                finish();
+                Toast.makeText(this, "Saiu do grupo", Toast.LENGTH_SHORT).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
