@@ -68,7 +68,6 @@ public class AddTarefaActivity extends AppCompatActivity implements DatePickerDi
             nomeGrupos.add(grupos.get(i).getNome());
         }
 
-
         // TODO fazer adapter para o spinner
         seletorGrupos = findViewById(R.id.seletorGrupos);
         ArrayAdapter<String> adapterSeletorGrupos = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, nomeGrupos);
@@ -76,6 +75,14 @@ public class AddTarefaActivity extends AppCompatActivity implements DatePickerDi
         seletorGrupos.setAdapter(adapterSeletorGrupos);
 
         checkBox = findViewById(R.id.checkBox);
+
+        if(nomeGrupos.size() <= 0) {
+
+            checkBox.setVisibility(View.INVISIBLE);
+            checkBox.setClickable(false);
+        }
+
+
 
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -101,6 +108,7 @@ public class AddTarefaActivity extends AppCompatActivity implements DatePickerDi
             }
             seletorGrupos.setSelection(indiceGrupoSelecionado);
         }
+
         btnAdicionar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
