@@ -113,15 +113,15 @@ public class AddTarefaActivity extends AppCompatActivity implements DatePickerDi
             @Override
             public void onClick(View view) {
                 if(campoTitulo.getText().toString().equals("")) {
-                    Toast.makeText(getApplicationContext(), "O título não pode ser vazio", Toast.LENGTH_SHORT);
+                    Toast.makeText(view.getContext(), "O título não pode ser vazio", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if(campoData.getText().toString().equals("")) {
-                    Toast.makeText(view.getContext(), "A data não pode ser vazio", Toast.LENGTH_SHORT);
+                    Toast.makeText(view.getContext(), "A data não pode ser vazio", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if(campoHora.getText().toString().equals("")) {
-                    Toast.makeText(view.getContext(), "A hora não pode ser vazio", Toast.LENGTH_SHORT);
+                    Toast.makeText(view.getContext(), "A hora não pode ser vazio", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if(checkBox.isChecked()){

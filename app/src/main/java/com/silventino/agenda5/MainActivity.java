@@ -79,6 +79,13 @@ public class MainActivity extends AppCompatActivity
                 startActivity(i);
             }
         });
+        com.github.clans.fab.FloatingActionButton btnAddGrupo = findViewById(R.id.fabAddGrupo);
+        btnAddGrupo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(view.getContext(), "Função não implementada", Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 
@@ -95,22 +102,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.activity_main_drawer, menu);
+        getMenuInflater().inflate(R.menu.main, menu);
 
-//        MenuItem itemNavCamera = menu.findItem(R.id.nav_camera);
-//        MenuItem itemNavGallery = menu.findItem(R.id.nav_gallery);
-//        MenuItem itemNavManage= menu.findItem(R.id.nav_manage);
-//        MenuItem itemNavSlideShow = menu.findItem(R.id.nav_slideshow);
-//        MenuItem itemNavShare = menu.findItem(R.id.nav_share);
-//        MenuItem itemNavSend = menu.findItem(R.id.nav_send);
-//
-//        itemNavCamera.setActionView(R.layout.activity_main);
-//        itemNavCamera.getActionView().setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Toast.makeText(view.getContext(), "Função não implementada", Toast.LENGTH_SHORT);
-//            }
-//        });
         return true;
     }
 
@@ -140,22 +133,22 @@ public class MainActivity extends AppCompatActivity
         switch (id) {
             case R.id.nav_camera:
                 // Handle the camera action
-                Toast.makeText(this, "Função não implementada", Toast.LENGTH_SHORT);
+                Toast.makeText(this, "Função não implementada", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_gallery:
-                Toast.makeText(this, "Função não implementada", Toast.LENGTH_SHORT);
+                Toast.makeText(this, "Função não implementada", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_slideshow:
-                Toast.makeText(this, "Função não implementada", Toast.LENGTH_SHORT);
+                Toast.makeText(this, "Função não implementada", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_manage:
-                Toast.makeText(this, "Função não implementada", Toast.LENGTH_SHORT);
+                Toast.makeText(this, "Função não implementada", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_share:
-                Toast.makeText(this, "Função não implementada", Toast.LENGTH_SHORT);
+                Toast.makeText(this, "Função não implementada", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_send:
-                Toast.makeText(this, "Função não implementada", Toast.LENGTH_SHORT);
+                Toast.makeText(this, "Função não implementada", Toast.LENGTH_SHORT).show();
                 break;
             default:
                 Toast.makeText(this, "Função não implementada", Toast.LENGTH_SHORT);

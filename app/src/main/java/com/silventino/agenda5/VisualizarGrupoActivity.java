@@ -1,11 +1,14 @@
 package com.silventino.agenda5;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -88,13 +91,39 @@ public class VisualizarGrupoActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.sair:
-                this.grupo.setParticipa(false);
-                finish();
-                Toast.makeText(this, "Saiu do grupo", Toast.LENGTH_SHORT).show();
+                confirmaSaida();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+
+    }
+
+    public void confirmaSaida() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle("Sair do grupo");
+        dialog.setMessage("Caso saia deste grupo todas as atividades pertencentes a ele serão removidas das sua agenda individual. " +
+                          "Tem certeza que deseja continuar?");
+
+
+        final Context context = this;
+        dialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                grupo.setParticipa(false);
+                Toast.makeText(context, "Saiu do grupo", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
+        dialog.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Toast.makeText(context, "Saida cancelada", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        AlertDialog alertDialog = dialog.create();
+        alertDialog.show();
 
     }
 
