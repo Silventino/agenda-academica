@@ -115,12 +115,15 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            Toast.makeText(getApplicationContext(), "Função não implementada", Toast.LENGTH_SHORT);
-            return true;
+        switch (id) {
+            case R.id.action_settings:
+                Toast.makeText(getApplicationContext(), "Função não implementada", Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
 
-        return super.onOptionsItemSelected(item);
+
     }
 
 

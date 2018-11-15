@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -50,6 +51,10 @@ public class AddTarefaActivity extends AppCompatActivity implements DatePickerDi
         setContentView(R.layout.activity_add_event);
 
         int idGrupo = getIntent().getIntExtra("idGrupo", -1);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle("CRONO");
 
         bancoDeDados = BancoDeDados.getInstancia();
 
@@ -183,11 +188,22 @@ public class AddTarefaActivity extends AppCompatActivity implements DatePickerDi
     @Override
     public void onDateSet(DatePicker datePicker, int ano, int mes, int dia) {
         mes++;
-        Toast.makeText(this, ""+ano+"/"+mes+"/"+dia, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, ""+ano+"/"+mes+"/"+dia, Toast.LENGTH_SHORT).show();
         campoData.setText(dia+"/"+mes+"/"+ano);
         this.diaSelecionado = dia;
         this.mesSelecionado = mes;
         this.anoSelecionado = ano;
 
+    }
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch(id) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 }
