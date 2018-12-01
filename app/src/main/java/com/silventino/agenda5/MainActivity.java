@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         // banco de dados
-        bancoDeDados = BancoDeDados.getInstancia();
+        bancoDeDados = BancoDeDados.getInstancia(getApplicationContext());
         bancoDeDados.addEvento(new Evento(14,11,2018,12,00, "Estudar para prova de compiladores", "vai ser dificil"));
         bancoDeDados.addGrupo(new Grupo("Compiladores"));
         bancoDeDados.addGrupo(new Grupo("IHC"));
