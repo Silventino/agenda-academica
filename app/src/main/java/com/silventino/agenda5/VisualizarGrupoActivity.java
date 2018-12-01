@@ -40,7 +40,7 @@ public class VisualizarGrupoActivity extends AppCompatActivity {
 
         int idGrupo = getIntent().getIntExtra("idGrupo", -1);
         Toast.makeText(this, idGrupo+"", Toast.LENGTH_SHORT).show();
-        grupo = BancoDeDados.getInstancia().getGrupoPorId(idGrupo);
+        grupo = BancoDeDados.getInstancia(getApplicationContext()).getGrupoPorId(idGrupo);
         if(grupo == null){
             Toast.makeText(this, "Erro ao procurar grupo", Toast.LENGTH_SHORT).show();
             finish();

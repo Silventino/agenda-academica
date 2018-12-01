@@ -36,7 +36,7 @@ public class ConteudoGrupos extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         listaGrupos = view.findViewById(R.id.listaGrupos);
 
-        final ArrayList<Grupo> gs = BancoDeDados.getInstancia().getGrupos();
+        final ArrayList<Grupo> gs = BancoDeDados.getInstancia(getActivity().getApplicationContext()).getGrupos();
 
         ListViewAdapterGrupo lva = new ListViewAdapterGrupo(gs, view.getContext());
         listaGrupos.setAdapter(lva);

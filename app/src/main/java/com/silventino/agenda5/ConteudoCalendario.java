@@ -61,7 +61,7 @@ public class ConteudoCalendario extends Fragment{
 
         // refresh nos dias decorados
 
-        ArrayList<Evento> eventos = BancoDeDados.getInstancia().getEventos();
+        ArrayList<Evento> eventos = BancoDeDados.getInstancia(getActivity().getApplicationContext()).getEventos();
         for(Evento evento : eventos){
             decorador.addDate(evento.getCalendarDay());
         }
@@ -71,7 +71,7 @@ public class ConteudoCalendario extends Fragment{
     }
 
     public void refreshListaTarefas(CalendarDay data){
-        ArrayList<Evento> eventosDoDia = BancoDeDados.getInstancia().getEventosDoDia(data.getDay(), data.getMonth(), data.getYear());
+        ArrayList<Evento> eventosDoDia = BancoDeDados.getInstancia(getActivity().getApplicationContext()).getEventosDoDia(data.getDay(), data.getMonth(), data.getYear());
         Log.i("asdasdasd", eventosDoDia.toString());
         ListViewAdapterEvento lva = new ListViewAdapterEvento(eventosDoDia, calendario.getContext());
         listaTarefas.setAdapter(lva);
