@@ -1,11 +1,14 @@
 package com.silventino.agenda5;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -21,6 +24,8 @@ import com.github.clans.fab.FloatingActionButton;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+
+import org.threeten.bp.LocalDate;
 
 import java.util.ArrayList;
 
@@ -39,8 +44,10 @@ public class VisualizarGrupoActivity extends AppCompatActivity {
 
 
         int idGrupo = getIntent().getIntExtra("idGrupo", -1);
+
         Toast.makeText(this, idGrupo+"", Toast.LENGTH_SHORT).show();
         grupo = BancoDeDados.getInstancia(getApplicationContext()).getGrupoPorId(idGrupo);
+
         if(grupo == null){
             Toast.makeText(this, "Erro ao procurar grupo", Toast.LENGTH_SHORT).show();
             finish();
@@ -71,26 +78,54 @@ public class VisualizarGrupoActivity extends AppCompatActivity {
         });
 
         listaTarefasGrupo = findViewById(R.id.listaTarefasGrupo);
-
+        calendario.setSelectedDate(LocalDate.now());
     }
 
     // seta a setinha pra voltar
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // handle arrow click here
-        if (item.getItemId() == android.R.id.home) {
-            finish(); // close this activity and return to preview activity (if there is any)
-        }
+//        if (item.getItemId() == android.R.id.home) {
+//            finish(); // close this activity and return to preview activity (if there is any)
+//        }
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 return true;
             case R.id.sair:
-                Toast.makeText(this, "Em breve", Toast.LENGTH_SHORT).show();
+                confirmaSaida();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+
+    }
+
+    public void confirmaSaida() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle("Sair do grupo");
+        dialog.setMessage("Caso saia deste grupo todas as atividades pertencentes a ele serão removidas das sua agenda individual. " +
+                          "Tem certeza que deseja continuar?");
+
+
+        final Context context = this;
+        dialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                grupo.setParticipa(false);
+                Toast.makeText(context, "Saiu do grupo", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
+        dialog.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Toast.makeText(context, "Saida cancelada", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        AlertDialog alertDialog = dialog.create();
+        alertDialog.show();
 
     }
 

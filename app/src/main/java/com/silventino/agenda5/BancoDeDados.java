@@ -146,5 +146,12 @@ public class BancoDeDados{
     }
 
 
-
+    public void removeEvento(Evento e) {
+        for(int i = 0; i < this.eventos.size(); i++) {
+            if(this.eventos.get(i).getId() == e.getId()) {
+                this.eventos.remove(i);
+                i--;
+            }
+        }
+    }
 }

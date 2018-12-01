@@ -47,7 +47,7 @@ public class ConteudoCalendario extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_conteudo_calendario, container, false);
         this.contexto = inflater.getContext();
-        Toast.makeText(contexto, "OK", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(contexto, "OK", Toast.LENGTH_SHORT).show();
         return rootView;
     }
 

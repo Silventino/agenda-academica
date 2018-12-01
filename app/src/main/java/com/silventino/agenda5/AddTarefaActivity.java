@@ -2,12 +2,14 @@ package com.silventino.agenda5;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -50,6 +52,10 @@ public class AddTarefaActivity extends AppCompatActivity implements DatePickerDi
 
         int idGrupo = getIntent().getIntExtra("idGrupo", -1);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle("CRONO");
+
         bancoDeDados = BancoDeDados.getInstancia(getApplicationContext());
 
         campoData = findViewById(R.id.campoData);
@@ -67,7 +73,6 @@ public class AddTarefaActivity extends AppCompatActivity implements DatePickerDi
             nomeGrupos.add(grupos.get(i).getNome());
         }
 
-
         // TODO fazer adapter para o spinner
         seletorGrupos = findViewById(R.id.seletorGrupos);
         ArrayAdapter<String> adapterSeletorGrupos = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, nomeGrupos);
@@ -75,6 +80,14 @@ public class AddTarefaActivity extends AppCompatActivity implements DatePickerDi
         seletorGrupos.setAdapter(adapterSeletorGrupos);
 
         checkBox = findViewById(R.id.checkBox);
+
+        if(nomeGrupos.size() <= 0) {
+
+            checkBox.setVisibility(View.INVISIBLE);
+            checkBox.setClickable(false);
+        }
+
+
 
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -104,6 +117,18 @@ public class AddTarefaActivity extends AppCompatActivity implements DatePickerDi
         btnAdicionar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(campoTitulo.getText().toString().equals("")) {
+                    Toast.makeText(view.getContext(), "O título não pode ser vazio", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(campoData.getText().toString().equals("")) {
+                    Toast.makeText(view.getContext(), "A data não pode ser vazio", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(campoHora.getText().toString().equals("")) {
+                    Toast.makeText(view.getContext(), "A hora não pode ser vazio", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 if(checkBox.isChecked()){
                     Grupo grupoSelecionado = grupos.get(seletorGrupos.getSelectedItemPosition());
                     Evento e = criarEvento();
@@ -114,6 +139,7 @@ public class AddTarefaActivity extends AppCompatActivity implements DatePickerDi
                 else{
                     bancoDeDados.addEvento(criarEvento());
                 }
+                Toast.makeText(getApplicationContext(), "Tarefa agendada", Toast.LENGTH_SHORT).show();
                 finish();
 
             }
@@ -162,11 +188,22 @@ public class AddTarefaActivity extends AppCompatActivity implements DatePickerDi
     @Override
     public void onDateSet(DatePicker datePicker, int ano, int mes, int dia) {
         mes++;
-        Toast.makeText(this, ""+ano+"/"+mes+"/"+dia, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, ""+ano+"/"+mes+"/"+dia, Toast.LENGTH_SHORT).show();
         campoData.setText(dia+"/"+mes+"/"+ano);
         this.diaSelecionado = dia;
         this.mesSelecionado = mes;
         this.anoSelecionado = ano;
 
+    }
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch(id) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 }

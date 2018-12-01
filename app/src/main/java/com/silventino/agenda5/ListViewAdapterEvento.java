@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class ListViewAdapterEvento extends ArrayAdapter<Evento> {
@@ -44,7 +45,7 @@ public class ListViewAdapterEvento extends ArrayAdapter<Evento> {
             convertView = inflater.inflate(R.layout.row_tarefas, pai, false);
             viewHolder.txtTitulo = convertView.findViewById(R.id.titulo);
             viewHolder.txtHora = convertView.findViewById(R.id.hora);
-            viewHolder.info = convertView.findViewById(R.id.item_info);
+//            viewHolder.info = convertView.findViewById(R.id.item_info);
 
             result=convertView;
 
@@ -56,14 +57,23 @@ public class ListViewAdapterEvento extends ArrayAdapter<Evento> {
 
 
         viewHolder.txtTitulo.setText(evento.getTitulo());
-        viewHolder.txtHora.setText(evento.getHora() + ":" + evento.getMinuto());
-        viewHolder.info.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(context, "UAU! QUE LOUCO MAN", Toast.LENGTH_SHORT).show();
-            }
-        });
-        viewHolder.info.setTag(posicao);
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+
+        String minuto = "";
+        if(evento.getMinuto() < 10) {
+            minuto = "0" + evento.getMinuto();
+        } else {
+            minuto = evento.getMinuto() + "";
+        }
+
+        viewHolder.txtHora.setText(evento.getHora() + ":" + minuto);
+//        viewHolder.info.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Toast.makeText(context, "UAU! QUE LOUCO MAN", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//        viewHolder.info.setTag(posicao);
         // Return the completed view to render on screen
         return convertView;
     }

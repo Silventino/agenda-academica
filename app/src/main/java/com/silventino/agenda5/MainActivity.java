@@ -11,10 +11,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
@@ -77,6 +79,13 @@ public class MainActivity extends AppCompatActivity
                 startActivity(i);
             }
         });
+        com.github.clans.fab.FloatingActionButton btnAddGrupo = findViewById(R.id.fabAddGrupo);
+        btnAddGrupo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(view.getContext(), "Função não implementada", Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 
@@ -94,6 +103,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+
         return true;
     }
 
@@ -105,12 +115,17 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id) {
+            case R.id.action_settings:
+                Toast.makeText(getApplicationContext(), "Função não implementada", Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
 
-        return super.onOptionsItemSelected(item);
+
     }
+
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -118,18 +133,28 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        switch (id) {
+            case R.id.nav_camera:
+                // Handle the camera action
+                Toast.makeText(this, "Função não implementada", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_gallery:
+                Toast.makeText(this, "Função não implementada", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_slideshow:
+                Toast.makeText(this, "Função não implementada", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_manage:
+                Toast.makeText(this, "Função não implementada", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_share:
+                Toast.makeText(this, "Função não implementada", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_send:
+                Toast.makeText(this, "Função não implementada", Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                Toast.makeText(this, "Função não implementada", Toast.LENGTH_SHORT);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

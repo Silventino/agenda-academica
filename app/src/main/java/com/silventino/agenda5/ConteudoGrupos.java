@@ -31,6 +31,22 @@ public class ConteudoGrupos extends Fragment {
         return rootView;
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //refresh nos dias listados
+        refreshListaGrupos();
+
+    }
+
+    public void refreshListaGrupos(){
+        ArrayList<Grupo> gs = BancoDeDados.getInstancia().getGrupos();
+        Log.i("asdasdasd", gs.toString());
+        ListViewAdapterGrupo lvag = new ListViewAdapterGrupo(gs, getView().getContext());
+        listaGrupos.setAdapter(lvag);
+        lvag.notifyDataSetChanged();
+    }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -38,8 +54,9 @@ public class ConteudoGrupos extends Fragment {
 
         final ArrayList<Grupo> gs = BancoDeDados.getInstancia(getActivity().getApplicationContext()).getGrupos();
 
-        ListViewAdapterGrupo lva = new ListViewAdapterGrupo(gs, view.getContext());
-        listaGrupos.setAdapter(lva);
+
+        ListViewAdapterGrupo lvag = new ListViewAdapterGrupo(gs, view.getContext());
+        listaGrupos.setAdapter(lvag);
         listaGrupos.setFocusable(false);
 
         listaGrupos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -51,5 +68,6 @@ public class ConteudoGrupos extends Fragment {
                 startActivity(i);
             }
         });
+
     }
 }

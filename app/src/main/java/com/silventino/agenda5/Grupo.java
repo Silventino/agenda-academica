@@ -13,10 +13,10 @@ public class Grupo {
         this.id = BancoDeDados.getProximoIdGrupo();
         this.nome = nome;
         this.eventos = new ArrayList<>();
-//        this.participa = false;
+        this.participa = false;
 
 
-        this.participa = true;
+//        this.participa = true;
 
 
         eventos.add(new Evento(12,11,2018, 12,12,"estudos", "top"));
@@ -76,6 +76,10 @@ public class Grupo {
             for(Evento e : this.eventos){
                 // TODO fazer um add eventoS
                 b.addEvento(e);
+            }
+        } else {
+            for(Evento e : this.eventos) {
+                BancoDeDados.getInstancia().removeEvento(e);
             }
         }
         this.participa = participa;
