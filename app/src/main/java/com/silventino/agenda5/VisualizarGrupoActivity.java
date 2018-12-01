@@ -45,7 +45,7 @@ public class VisualizarGrupoActivity extends AppCompatActivity {
 
         int idGrupo = getIntent().getIntExtra("idGrupo", -1);
 //        Toast.makeText(this, idGrupo+"", Toast.LENGTH_SHORT).show();
-        grupo = BancoDeDados.getInstancia().getGrupoPorId(idGrupo);
+        grupo = BancoDeDados.getInstancia(getApplicationContext()).getGrupoPorId(idGrupo);
         if(grupo == null){
             Toast.makeText(this, "Erro ao procurar grupo", Toast.LENGTH_SHORT).show();
             finish();
@@ -110,7 +110,7 @@ public class VisualizarGrupoActivity extends AppCompatActivity {
         dialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                grupo.setParticipa(false);
+                grupo.setParticipa(false, BancoDeDados.getInstancia(getApplicationContext()));
                 Toast.makeText(context, "Saiu do grupo", Toast.LENGTH_SHORT).show();
                 finish();
             }

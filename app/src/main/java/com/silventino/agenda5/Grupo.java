@@ -71,15 +71,15 @@ public class Grupo {
         return participa;
     }
 
-    public void setParticipa(boolean participa) {
+    public void setParticipa(boolean participa, BancoDeDados b) {
         if(participa == true){
             for(Evento e : this.eventos){
                 // TODO fazer um add eventoS
-                BancoDeDados.getInstancia().addEvento(e);
+                b.addEvento(e);
             }
         } else {
             for(Evento e : this.eventos) {
-                BancoDeDados.getInstancia().removeEvento(e);
+                b.removeEvento(e);
             }
         }
         this.participa = participa;

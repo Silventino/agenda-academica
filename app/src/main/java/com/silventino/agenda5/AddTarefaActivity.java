@@ -56,7 +56,7 @@ public class AddTarefaActivity extends AppCompatActivity implements DatePickerDi
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("CRONO");
 
-        bancoDeDados = BancoDeDados.getInstancia();
+        bancoDeDados = BancoDeDados.getInstancia(getApplicationContext());
 
         campoData = findViewById(R.id.campoData);
         campoHora = findViewById(R.id.campoHora);
@@ -66,7 +66,7 @@ public class AddTarefaActivity extends AppCompatActivity implements DatePickerDi
         btnAdicionar = findViewById(R.id.btnAdicionar);
 
         // TODO fazer essa funcao receber um usuario cadastrado
-        final ArrayList<Grupo> grupos = BancoDeDados.getInstancia().getMeusGrupos(-1);
+        final ArrayList<Grupo> grupos = BancoDeDados.getInstancia(getApplicationContext()).getMeusGrupos(-1);
 
         ArrayList<String> nomeGrupos = new ArrayList<>();
         for(int i = 0; i < grupos.size(); i++) {
@@ -134,7 +134,7 @@ public class AddTarefaActivity extends AppCompatActivity implements DatePickerDi
                     Evento e = criarEvento();
                     e.setGrupo(grupoSelecionado);
                     grupoSelecionado.addEvento(e);
-                    BancoDeDados.getInstancia().addEvento(e);
+                    BancoDeDados.getInstancia(getApplicationContext()).addEvento(e);
                 }
                 else{
                     bancoDeDados.addEvento(criarEvento());
