@@ -77,13 +77,10 @@ public class ConteudoCalendario extends Fragment{
     public void refreshCalendar(HashMap<String, ArrayList<Evento>> eventos){
         Log.d("Cá estou!", "oia aqui");
 
-        for(String key : eventos.keySet()){
-            for(Object evento : eventos.get(key)){
-                Log.d("Eventos", ((Evento) evento).getData());
-                decorador.addDate(((Evento) evento).getCalendarDay());
-            }
-        }
+        decorador.rebuild(eventos);
+
         calendario.invalidateDecorators();
+        this.refreshListaTarefas(calendario.getSelectedDate());
     }
 
     public void refreshListaTarefas(CalendarDay data){

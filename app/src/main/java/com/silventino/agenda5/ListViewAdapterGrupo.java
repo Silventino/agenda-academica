@@ -67,14 +67,18 @@ public class ListViewAdapterGrupo extends ArrayAdapter<Grupo> {
             viewHolder.btnEntrar.setClickable(true);
         }
 
+
+        final ListViewAdapterGrupo ponteiroThis = this;
         viewHolder.btnEntrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                grupo.setParticipa(true);
+//                grupo.setParticipa(true);
+                BancoDeDados.getInstancia(getContext().getApplicationContext()).entrarGrupo(grupo, ponteiroThis);
                 viewHolder.btnEntrar.setVisibility(View.INVISIBLE);
                 viewHolder.btnEntrar.setClickable(false);
                 Intent i = new Intent(view.getContext(), VisualizarGrupoActivity.class);
                 i.putExtra("idGrupo", grupo.getId());
+                i.putExtra("nomeGrupo", grupo.getNome());
                 view.getContext().startActivity(i);
                 // TODO abrir grupo ao entrar
                 Toast.makeText(context, "Você entrou no grupo! Clique nele para acessá-lo", Toast.LENGTH_SHORT).show();
@@ -87,5 +91,8 @@ public class ListViewAdapterGrupo extends ArrayAdapter<Grupo> {
         return convertView;
     }
 
+    public void receberRespostaEntrarGrupo(){
+
+    }
 
 }

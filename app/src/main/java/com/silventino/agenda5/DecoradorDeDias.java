@@ -1,16 +1,20 @@
 package com.silventino.agenda5;
 
+import android.util.Log;
+
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.spans.DotSpan;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 
 public class DecoradorDeDias implements DayViewDecorator {
     private final int cor;
-    private final HashSet<CalendarDay> dias;
+    private HashSet<CalendarDay> dias;
 
     public DecoradorDeDias(int cor, Collection<CalendarDay> dias){
         this.cor = cor;
@@ -34,6 +38,16 @@ public class DecoradorDeDias implements DayViewDecorator {
         this.dias.addAll(dias);
     }
 
+    public void rebuild(HashMap<String, ArrayList<Evento>> eventosMap){
+        dias = new HashSet<>();
+        for(String key : eventosMap.keySet()){
+            for(Object evento : eventosMap.get(key)){
+                Log.d("Eventos", ((Evento) evento).getData());
+                this.addDate(((Evento) evento).getCalendarDay());
+            }
+        }
+
+    }
 
     @Override
     public void decorate(DayViewFacade dayViewFacade) {

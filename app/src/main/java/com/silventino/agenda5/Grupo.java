@@ -1,50 +1,50 @@
 package com.silventino.agenda5;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Grupo {
 //    private listaDeParticipantes
     private int id;
     private String nome;
-    ArrayList<Evento> eventos;
+    public HashMap<String,ArrayList<Evento>> eventosMap;
     private boolean participa; //TODO arruma isso direito fi
 
     public Grupo(String nome) {
-        this.id = BancoDeDados.getProximoIdGrupo();
+        this.id = -1;
         this.nome = nome;
-        this.eventos = new ArrayList<>();
+        this.eventosMap = new HashMap<>();
         this.participa = false;
 
 
 //        this.participa = true;
 
 
-        eventos.add(new Evento(12,11,2018, 12,12,"estudos", "top"));
-        eventos.add(new Evento(12,11,2018, 12,12,"estudos", "top"));
-        eventos.add(new Evento(12,11,2018, 12,12,"estudos", "top"));
-        eventos.add(new Evento(12,11,2018, 12,12,"estudos", "top"));
-        eventos.add(new Evento(12,11,2018, 12,12,"estudos", "top"));
-        eventos.add(new Evento(12,11,2018, 12,12,"estudos", "top"));
-        eventos.add(new Evento(12,11,2018, 12,12,"estudos", "top"));
-        eventos.add(new Evento(12,11,2018, 12,12,"estudos", "top"));
-        eventos.add(new Evento(12,11,2018, 12,12,"estudos", "top"));
-        eventos.add(new Evento(12,11,2018, 12,12,"estudos989898", "top"));
-        eventos.add(new Evento(14,11,2018, 12,12,"estudos2", "top"));
-        eventos.add(new Evento(12,11,2018, 12,12,"estudos3", "top"));
+//        eventos.add(new Evento(12,11,2018, 12,12,"estudos", "top"));
+//        eventos.add(new Evento(12,11,2018, 12,12,"estudos", "top"));
+//        eventos.add(new Evento(12,11,2018, 12,12,"estudos", "top"));
+//        eventos.add(new Evento(12,11,2018, 12,12,"estudos", "top"));
+//        eventos.add(new Evento(12,11,2018, 12,12,"estudos", "top"));
+//        eventos.add(new Evento(12,11,2018, 12,12,"estudos", "top"));
+//        eventos.add(new Evento(12,11,2018, 12,12,"estudos", "top"));
+//        eventos.add(new Evento(12,11,2018, 12,12,"estudos", "top"));
+//        eventos.add(new Evento(12,11,2018, 12,12,"estudos", "top"));
+//        eventos.add(new Evento(12,11,2018, 12,12,"estudos989898", "top"));
+//        eventos.add(new Evento(14,11,2018, 12,12,"estudos2", "top"));
+//        eventos.add(new Evento(12,11,2018, 12,12,"estudos3", "top"));
     }
 
     public ArrayList<Evento> getEventosDoDia(int dia, int mes, int ano){
-        ArrayList<Evento> eventosDoDia = new ArrayList<>();
-        for(Evento evento : eventos){
-            if(evento.dataIgual(dia, mes, ano)){
-                eventosDoDia.add(evento);
-            }
+        ArrayList<Evento> eventosDoDia = eventosMap.get(ano+"-"+mes+"-"+dia);
+        if(eventosDoDia == null){
+            return new ArrayList<Evento>();
         }
         return eventosDoDia;
     }
 
     public void addEvento(Evento e){
-        eventos.add(e);
+//        eventos.put(e.getData(), e);
+        //TODO
     }
 
     public int getId() {
@@ -64,8 +64,11 @@ public class Grupo {
     }
 
     public ArrayList<Evento> getEventos() {
-        return eventos;
+//        return eventos;
+    //TODO
+        return new ArrayList<Evento>();
     }
+
 
     public boolean participaDoGrupo() {
         return participa;

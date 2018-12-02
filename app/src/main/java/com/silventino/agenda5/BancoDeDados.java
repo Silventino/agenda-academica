@@ -154,14 +154,82 @@ public class BancoDeDados{
     }
 
 
-    public Grupo getGrupoPorId(int id){
-        for(Grupo grupo : grupos){
-            if(grupo.getId() == id){
-                return grupo;
-            }
-        }
-        return null;
+//    public Grupo getGrupoPorId(int id){
+////        for(Grupo grupo : grupos){
+////            if(grupo.getId() == id){
+////                return grupo;
+////            }
+////        }
+////        return null;
+//
+////        http://192.168.1.3:5000/buscar/grupos/id_ou_user?grupo_id=18&usuario_id=
+//
+//    }
+
+    public void getEventosGrupo(final Grupo g, final VisualizarGrupoActivity v){
+        final String caminho = "/buscar/tarefas/dono";
+
+        JsonArrayRequest JSONRequest = new JsonArrayRequest(Request.Method.GET, url + caminho + "?dono_id=" + g.getId(), null,
+                new Response.Listener<JSONArray>(){
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        // display response
+                        Log.d("Caminhoo",url + caminho + "?dono_id=" + g.getId());
+                        Log.d("Response getEventos", response.toString());
+
+                        ArrayList<Evento> eventos = new ArrayList<>();
+
+                        for(int i = 0; i < response.length(); i++){
+                            try {
+                                JSONObject o = (JSONObject) response.get(i);
+                                int dia = Evento.getDiaFromData((String)o.get("data"));
+                                int mes = Evento.getMesFromData((String)o.get("data"));
+                                int ano = Evento.getAnoFromData((String)o.get("data"));
+                                int hora = Evento.getHoraFromHorario((String)o.get("horario"));
+                                int minuto = Evento.getMinutoFromHorario((String)o.get("horario"));
+                                String titulo = (String)o.get("titulo");
+                                String descricao = (String)o.get("descricao");
+                                int idDono = (int)o.get("dono_id");
+
+                                Evento evento = new Evento(dia,mes,ano,hora,minuto,titulo,descricao);
+                                evento.setId(o.getInt("id"));
+                                evento.setDono_id(o.getInt("dono_id"));
+
+                                eventos.add(evento);
+
+                                if(g.eventosMap.containsKey(evento.getData())){
+                                    if(!g.eventosMap.get(evento.getData()).contains(evento)){
+                                        eventosMap.get(evento.getData()).add(evento);
+                                    }
+                                }
+                                else{
+                                    ArrayList<Evento> array = new ArrayList();
+                                    array.add(evento);
+                                    g.eventosMap.put(evento.getData(), array);
+                                }
+
+                                Log.d("eventosMap", g.eventosMap.toString());
+                                Log.d("eventosMap", "adicionei: " + evento.getData());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        v.refreshCalendar(g.eventosMap);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Error.Response3", error.toString());
+                    }
+                }
+        );
+
+        fila.add(JSONRequest);
     }
+
+
 
     public void addEvento(final Evento e, final AddTarefaActivity activity){
         String caminho = "/adicionar/tarefa";
@@ -253,7 +321,7 @@ public class BancoDeDados{
     }
 
     public void getEventos(final ConteudoCalendario c) {
-        String caminho = "/buscar/tarefas/dono";
+        String caminho = "/buscar/tarefas/todos/dono";
 
         JsonArrayRequest JSONRequest = new JsonArrayRequest(Request.Method.GET, url + caminho + "?dono_id=" + id_online, null,
                 new Response.Listener<JSONArray>(){
@@ -281,7 +349,7 @@ public class BancoDeDados{
                                 evento.setDono_id(o.getInt("dono_id"));
 
                                 eventos.add(evento);
-
+                                eventosMap = new HashMap<>();
                                 if(eventosMap.containsKey(evento.getData())){
                                     if(!eventosMap.get(evento.getData()).contains(evento)){
                                         eventosMap.get(evento.getData()).add(evento);
@@ -317,6 +385,82 @@ public class BancoDeDados{
 
 //        Log.i("tamanhooo2222", eventos.size()+ "");
     }
+
+    public void entrarGrupo(Grupo g, final ListViewAdapterGrupo activity){
+
+        String caminho = "/entrar_grupo";
+
+        Map<String, String>  params = new HashMap<>();
+        params.put("usuario_id", id_online+"");
+        params.put("grupo_id", g.getId()+"");
+        params.put("eh_administrador", 0+"");
+
+        Log.d("TENTANDO ENTRAR: ", g.getNome() + " - " + g.getId());
+        JsonObjectRequest JSONRequest = new JsonObjectRequest(Request.Method.POST, url + caminho, new JSONObject(params),
+                new Response.Listener<JSONObject>(){
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // display response
+                        Log.d("Response addEvento", response.toString());
+
+                        activity.receberRespostaEntrarGrupo();
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Error.Response6", error.toString());
+                    }
+                }
+        ){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                return headers;
+            }
+        };
+        fila.add(JSONRequest);
+    }
+
+    public void sairGrupo(Grupo g, final VisualizarGrupoActivity activity){
+        String caminho = "/sair_grupo";
+
+        Map<String, String>  params = new HashMap<>();
+        params.put("usuario_id", id_online+"");
+        params.put("grupo_id", g.getId()+"");
+
+        Log.d("TENTANDO ENTRAR: ", g.getNome() + " - " + g.getId());
+        JsonObjectRequest JSONRequest = new JsonObjectRequest(Request.Method.POST, url + caminho, new JSONObject(params),
+                new Response.Listener<JSONObject>(){
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // display response
+                        Log.d("Response addEvento", response.toString());
+
+                        activity.receberRespostarSairGrupo();
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Error.Response6", error.toString());
+                    }
+                }
+        ){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                return headers;
+            }
+        };
+        fila.add(JSONRequest);
+    }
+
+
     public void getGrupos(final ConteudoGrupos activity) {
 //        Log.i("tamanhooo2222", eventos.size()+ "");
 //        /buscar/grupos/id_ou_user?grupo_id=&usuario_id=11
@@ -338,6 +482,8 @@ public class BancoDeDados{
                                 String nome = (String) o.get("nome");
 
                                 Grupo g = new Grupo(nome);
+                                int idGrupo = o.getInt("dono_id");
+                                g.setId(idGrupo);
                                 if(o.get("participa").equals("false")){
                                     g.setParticipa(false);
                                 }

@@ -56,6 +56,7 @@ public class ConteudoGrupos extends Fragment {
                 Grupo g = grupos.get(pos);
                 Intent i = new Intent(getActivity(), VisualizarGrupoActivity.class);
                 i.putExtra("idGrupo", g.getId());
+                i.putExtra("nomeGrupo", g.getNome());
                 startActivity(i);
             }
         });

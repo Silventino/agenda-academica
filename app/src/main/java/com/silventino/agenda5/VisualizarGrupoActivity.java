@@ -28,6 +28,7 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import org.threeten.bp.LocalDate;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class VisualizarGrupoActivity extends AppCompatActivity {
     private MaterialCalendarView calendario;
@@ -44,9 +45,14 @@ public class VisualizarGrupoActivity extends AppCompatActivity {
 
 
         int idGrupo = getIntent().getIntExtra("idGrupo", -1);
+        String nomeGrupo = getIntent().getStringExtra("nomeGrupo");
+
+        this.grupo = new Grupo(nomeGrupo);
+        this.grupo.setId(idGrupo);
+
 //        Toast.makeText(this, idGrupo+"", Toast.LENGTH_SHORT).show();
-        grupo = BancoDeDados.getInstancia(getApplicationContext()).getGrupoPorId(idGrupo);
-        if(grupo == null){
+//        grupo = BancoDeDados.getInstancia(getApplicationContext()).getGrupoPorId(idGrupo);
+        if(nomeGrupo == null || idGrupo == -1){
             Toast.makeText(this, "Erro ao procurar grupo", Toast.LENGTH_SHORT).show();
             finish();
             return;
@@ -78,6 +84,8 @@ public class VisualizarGrupoActivity extends AppCompatActivity {
 
         listaTarefasGrupo = findViewById(R.id.listaTarefasGrupo);
         calendario.setSelectedDate(LocalDate.now());
+
+        BancoDeDados.getInstancia(getApplicationContext()).getEventosGrupo(this.grupo, this);
     }
 
     // seta a setinha pra voltar
@@ -100,6 +108,18 @@ public class VisualizarGrupoActivity extends AppCompatActivity {
 
     }
 
+    public void refreshCalendar(HashMap<String, ArrayList<Evento>> eventos){
+        Log.d("Cá estou!", "oia aqui");
+
+        for(String key : eventos.keySet()){
+            for(Object evento : eventos.get(key)){
+                Log.d("Eventos", ((Evento) evento).getData());
+                decorador.addDate(((Evento) evento).getCalendarDay());
+            }
+        }
+        calendario.invalidateDecorators();
+    }
+
     public void confirmaSaida() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle("Sair do grupo");
@@ -108,12 +128,12 @@ public class VisualizarGrupoActivity extends AppCompatActivity {
 
 
         final Context context = this;
+        final VisualizarGrupoActivity ponteiroThis = this;
         dialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                grupo.setParticipa(false);
-                Toast.makeText(context, "Saiu do grupo", Toast.LENGTH_SHORT).show();
-                finish();
+                BancoDeDados.getInstancia(getApplicationContext()).sairGrupo(grupo, ponteiroThis);
+
             }
         });
         dialog.setNegativeButton("Não", new DialogInterface.OnClickListener() {
@@ -126,6 +146,11 @@ public class VisualizarGrupoActivity extends AppCompatActivity {
         AlertDialog alertDialog = dialog.create();
         alertDialog.show();
 
+    }
+
+    public void receberRespostarSairGrupo(){
+        Toast.makeText(this, "Saiu do grupo", Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     @Override
@@ -147,7 +172,7 @@ public class VisualizarGrupoActivity extends AppCompatActivity {
     public void refreshListaTarefas(CalendarDay data){
         // TODO mudar isso auqi pro banco de dados
         ArrayList<Evento> eventosDoDia = grupo.getEventosDoDia(data.getDay(), data.getMonth(), data.getYear());
-        Log.i("asdasdasd", eventosDoDia.toString());
+//        Log.i("asdasdasd", eventosDoDia.toString());
         ListViewAdapterEvento lva = new ListViewAdapterEvento(eventosDoDia, calendario.getContext());
         listaTarefasGrupo.setAdapter(lva);
         lva.notifyDataSetChanged();
