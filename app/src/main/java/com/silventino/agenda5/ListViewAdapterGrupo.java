@@ -70,7 +70,7 @@ public class ListViewAdapterGrupo extends ArrayAdapter<Grupo> {
         viewHolder.btnEntrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                grupo.setParticipa(true, BancoDeDados.getInstancia(getContext().getApplicationContext()));
+                grupo.setParticipa(true);
                 viewHolder.btnEntrar.setVisibility(View.INVISIBLE);
                 viewHolder.btnEntrar.setClickable(false);
                 Intent i = new Intent(view.getContext(), VisualizarGrupoActivity.class);

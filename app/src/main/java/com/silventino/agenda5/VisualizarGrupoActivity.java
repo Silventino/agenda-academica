@@ -49,6 +49,7 @@ public class VisualizarGrupoActivity extends AppCompatActivity {
         if(grupo == null){
             Toast.makeText(this, "Erro ao procurar grupo", Toast.LENGTH_SHORT).show();
             finish();
+            return;
         }
 
         // coloca a setinha no toolbar e o nome do grupo
@@ -110,7 +111,7 @@ public class VisualizarGrupoActivity extends AppCompatActivity {
         dialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                grupo.setParticipa(false, BancoDeDados.getInstancia(getApplicationContext()));
+                grupo.setParticipa(false);
                 Toast.makeText(context, "Saiu do grupo", Toast.LENGTH_SHORT).show();
                 finish();
             }

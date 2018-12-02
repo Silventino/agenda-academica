@@ -71,18 +71,8 @@ public class Grupo {
         return participa;
     }
 
-    public void setParticipa(boolean participa, BancoDeDados b) {
-        if(participa == true){
-            for(Evento e : this.eventos){
-                // TODO fazer um add eventoS
-                //TODO num sei o que fazer aqui
-//                b.addEvento(e);
-            }
-        } else {
-            for(Evento e : this.eventos) {
-                b.removeEvento(e);
-            }
-        }
+    public void setParticipa(boolean participa) {
+
         this.participa = participa;
     }
 }

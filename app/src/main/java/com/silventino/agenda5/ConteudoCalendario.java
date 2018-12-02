@@ -23,6 +23,7 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import org.threeten.bp.LocalDate;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class ConteudoCalendario extends Fragment{
@@ -67,19 +68,26 @@ public class ConteudoCalendario extends Fragment{
 
     public void refreshCalendar(ArrayList<Evento> eventos){
         for(Evento evento : eventos){
+//            Log.d("Eventos", evento.getData());
             decorador.addDate(evento.getCalendarDay());
         }
         calendario.invalidateDecorators();
+    }
 
+    public void refreshCalendar(HashMap<String, ArrayList<Evento>> eventos){
+        Log.d("Cá estou!", "oia aqui");
+
+        for(String key : eventos.keySet()){
+            for(Object evento : eventos.get(key)){
+                Log.d("Eventos", ((Evento) evento).getData());
+                decorador.addDate(((Evento) evento).getCalendarDay());
+            }
+        }
+        calendario.invalidateDecorators();
     }
 
     public void refreshListaTarefas(CalendarDay data){
-        Log.d("refreshLista", data.getDay() + "/" + data.getMonth());
-        BancoDeDados.getInstancia(getActivity().getApplicationContext()).getEventosDoDia(data.getDay(), data.getMonth(), data.getYear(), this);
-    }
-
-    public void getRetornoListaTarefas(ArrayList<Evento> eventosDoDia){
-        Log.i("asdasdasd", eventosDoDia.toString());
+        ArrayList eventosDoDia = BancoDeDados.getInstancia(getActivity().getApplicationContext()).getEventosDoDia(data.getDay(), data.getMonth(), data.getYear());
         ListViewAdapterEvento lva = new ListViewAdapterEvento(eventosDoDia, calendario.getContext());
         listaTarefas.setAdapter(lva);
         lva.notifyDataSetChanged();

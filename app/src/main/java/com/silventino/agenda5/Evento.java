@@ -16,6 +16,7 @@ public class Evento implements Serializable{
     private String descricao;
     private Grupo grupo;
     private int id;
+    private int dono_id;
 
     public Evento(int dia, int mes, int ano, int hora, int minuto, String titulo, String descricao) {
         this.dia = dia;
@@ -25,8 +26,18 @@ public class Evento implements Serializable{
         this.minuto = minuto;
         this.titulo = titulo;
         this.descricao = descricao;
-        this.id = BancoDeDados.getProximoIdEvento();
+        this.id = -1;
+        this.dono_id = -1;
     }
+
+    public void setId(int id){
+        this.id = id;
+    }
+
+    public void setDono_id(int id){
+        this.dono_id = id;
+    }
+
 
     public boolean dataIgual(int dia, int mes, int ano){
         if(this.ano == ano && this.mes == mes && this.dia == dia){
@@ -114,4 +125,12 @@ public class Evento implements Serializable{
         return Integer.valueOf(partes[1]);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        Evento e = (Evento) obj;
+        if(e.id == this.id){
+            return true;
+        }
+        return false;
+    }
 }

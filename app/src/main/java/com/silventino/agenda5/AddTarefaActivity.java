@@ -122,6 +122,8 @@ public class AddTarefaActivity extends AppCompatActivity implements DatePickerDi
             seletorGrupos.setSelection(indiceGrupoSelecionado);
         }
 
+        final AddTarefaActivity ponteiroThis = this;
+
         btnAdicionar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -142,20 +144,16 @@ public class AddTarefaActivity extends AppCompatActivity implements DatePickerDi
                     Evento e = criarEvento();
                     e.setGrupo(grupoSelecionado);
                     grupoSelecionado.addEvento(e);
-                    BancoDeDados.getInstancia(getApplicationContext()).addEvento(e);
+                    BancoDeDados.getInstancia(getApplicationContext()).addEvento(e, ponteiroThis);
                 }
                 else{
-                    bancoDeDados.addEvento(criarEvento());
+                    bancoDeDados.addEvento(criarEvento(), ponteiroThis);
                 }
-                Toast.makeText(getApplicationContext(), "Tarefa agendada", Toast.LENGTH_SHORT).show();
-                finish();
-
+//                finish();
             }
         });
 
 
-
-        final AddTarefaActivity ponteiroThis = this;
         campoData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -172,6 +170,11 @@ public class AddTarefaActivity extends AppCompatActivity implements DatePickerDi
             }
         });
 
+    }
+
+    public void fechar(){
+        Toast.makeText(getApplicationContext(), "Tarefa agendada", Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     public Evento criarEvento(){

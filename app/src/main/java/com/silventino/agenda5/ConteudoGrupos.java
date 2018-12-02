@@ -41,31 +41,37 @@ public class ConteudoGrupos extends Fragment {
     }
 
     public void refreshListaGrupos(){
-        ArrayList<Grupo> gs = BancoDeDados.getInstancia(getActivity().getApplicationContext()).getGrupos();
-        Log.i("asdasdasd", gs.toString());
-        ListViewAdapterGrupo lvag = new ListViewAdapterGrupo(gs, getView().getContext());
+        BancoDeDados.getInstancia(getActivity().getApplicationContext()).getGrupos(this);
+
+    }
+
+    public void getListaGrupos(final ArrayList<Grupo> grupos){
+        Log.i("asdasdasd", grupos.toString());
+        ListViewAdapterGrupo lvag = new ListViewAdapterGrupo(grupos, getView().getContext());
         listaGrupos.setAdapter(lvag);
         lvag.notifyDataSetChanged();
-    }
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        listaGrupos = view.findViewById(R.id.listaGrupos);
-        final ArrayList<Grupo> gs = BancoDeDados.getInstancia(getActivity().getApplicationContext()).getGrupos();
-
-        ListViewAdapterGrupo lvag = new ListViewAdapterGrupo(gs, view.getContext());
-        listaGrupos.setAdapter(lvag);
-        listaGrupos.setFocusable(false);
-
         listaGrupos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
-                Grupo g = gs.get(pos);
+                Grupo g = grupos.get(pos);
                 Intent i = new Intent(getActivity(), VisualizarGrupoActivity.class);
                 i.putExtra("idGrupo", g.getId());
                 startActivity(i);
             }
         });
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        listaGrupos = view.findViewById(R.id.listaGrupos);
+        BancoDeDados.getInstancia(getActivity().getApplicationContext()).getGrupos(this);
+
+//        ListViewAdapterGrupo lvag = new ListViewAdapterGrupo(gs, view.getContext());
+//        listaGrupos.setAdapter(lvag);
+//        listaGrupos.setFocusable(false);
+
+
 
     }
 }
