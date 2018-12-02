@@ -75,7 +75,8 @@ public class Grupo {
         if(participa == true){
             for(Evento e : this.eventos){
                 // TODO fazer um add eventoS
-                b.addEvento(e);
+                //TODO num sei o que fazer aqui
+//                b.addEvento(e);
             }
         } else {
             for(Evento e : this.eventos) {

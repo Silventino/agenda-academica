@@ -47,7 +47,6 @@ public class ConteudoCalendario extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_conteudo_calendario, container, false);
         this.contexto = inflater.getContext();
-//        Toast.makeText(contexto, "OK", Toast.LENGTH_SHORT).show();
         return rootView;
     }
 
@@ -99,18 +98,6 @@ public class ConteudoCalendario extends Fragment{
         listaTarefas = view.findViewById(R.id.listaTarefas);
 
         ArrayList<Evento> es = new ArrayList<>();
-
-//        es.add(new Evento(12,12,1998, 12, 12, "uau", "Doze"));
-//        es.add(new Evento(14,12,1998, 12, 12, "uaau!", "Doze"));
-//        es.add(new Evento(15,12,1998, 12, 12, "uaaau!", "Doze"));
-//        es.add(new Evento(16,12,1998, 12, 12, "uauaaaaa!", "Doze"));
-//        es.add(new Evento(17,12,1998, 12, 12, "uauaaaaaaa!", "Doze"));
-//        es.add(new Evento(12,12,1998, 12, 12, "uau", "Doze"));
-//        es.add(new Evento(12,12,1998, 12, 12, "uau!", "Doze"));
-//        es.add(new Evento(16,12,1998, 12, 12, "NUUUUUUUUUUU uauaaaaa!", "Doze"));
-//        es.add(new Evento(17,12,1998, 12, 12, "UUUU uauaaaaaaa!", "Doze"));
-//        es.add(new Evento(12,12,1998, 12, 12, "uau!", "Doze"));
-//        es.add(new Evento(12,12,1998, 12, 12, "IUIUNINI uau!", "Doze"));
 
         ListViewAdapterEvento lva = new ListViewAdapterEvento(es, view.getContext());
         listaTarefas.setAdapter(lva);

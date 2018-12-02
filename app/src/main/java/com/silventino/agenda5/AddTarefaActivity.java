@@ -42,6 +42,8 @@ public class AddTarefaActivity extends AppCompatActivity implements DatePickerDi
     private Spinner seletorGrupos;
 
     private BancoDeDados bancoDeDados;
+    
+    private int id_online;
 
 
 
@@ -49,8 +51,14 @@ public class AddTarefaActivity extends AppCompatActivity implements DatePickerDi
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_event);
+        
+        Intent intent = getIntent();
+        id_online = intent.getIntExtra("id", -1);
+        if(id_online < 0){
+            Toast.makeText(this, "Algo está errado...", Toast.LENGTH_SHORT).show();
+        }
 
-        int idGrupo = getIntent().getIntExtra("idGrupo", -1);
+        final int idGrupo = getIntent().getIntExtra("idGrupo", -1);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);

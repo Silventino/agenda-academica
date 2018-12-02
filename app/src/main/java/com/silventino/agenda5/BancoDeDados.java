@@ -16,6 +16,7 @@ import com.silventino.agenda5.Grupo;
 import com.silventino.agenda5.Usuario;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -32,6 +33,9 @@ public class BancoDeDados{
     private static BancoDeDados INSTANCIA = null;
     private RequestQueue fila;
     private String url = "http://192.168.1.3:5000";
+
+    private int id_online = -1;
+
     private BancoDeDados(Context c) {
         this.eventos = new ArrayList<>();
         this.grupos = new ArrayList<>();
@@ -80,9 +84,41 @@ public class BancoDeDados{
         return true;
     }
 
-    public int login(String nome, String senha){
-        // TODO login
-        return 1;
+    public void login(String login, String senha, final LoginActivity telaDeLogin){
+        String caminho = "/login";
+        Map<String, String>  params = new HashMap<>();
+        params.put("login", login);
+        params.put("senha", senha);
+        JsonObjectRequest JSONRequest = new JsonObjectRequest(Request.Method.POST, url + caminho, new JSONObject(params),
+                new Response.Listener<JSONObject>(){
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // display response
+                        Log.d("Response", response.toString());
+                        try {
+                            int id = response.getInt("usuario_id");
+                            id_online = id;
+                            telaDeLogin.receberLogin(id);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Error.Response", error.toString());
+                    }
+                }
+        ){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                return headers;
+            }
+        };
+        fila.add(JSONRequest);
     }
 
 
@@ -96,7 +132,39 @@ public class BancoDeDados{
     }
 
     public void addEvento(Evento e){
-        this.eventos.add(e);
+        String caminho = "/adicionar/tarefa";
+        Map<String, String>  params = new HashMap<>();
+        params.put("data", e.getData());
+        params.put("horario", e.getHorario());
+        params.put("titulo", e.getTitulo());
+        params.put("descricao", e.getDescricao());
+        params.put("dono_id", id_online + "");
+        JsonObjectRequest JSONRequest = new JsonObjectRequest(Request.Method.POST, url + caminho, new JSONObject(params),
+                new Response.Listener<JSONObject>(){
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // display response
+                        Log.d("Response", response.toString());
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Error.Response", error.toString());
+                    }
+                }
+        ){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                return headers;
+            }
+        };
+        fila.add(JSONRequest);
+
+
     }
 
     public void addGrupo(Grupo g){
@@ -135,11 +203,46 @@ public class BancoDeDados{
     }
 
     public ArrayList<Evento> getEventos() {
-        Log.i("tamanhooo2222", eventos.size()+ "");
+        String caminho = "/buscar/tarefas/dono";
+        JSONObject param = new JSONObject();
+        try {
+            param.put("id_dono", id_online);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JsonArrayRequest JSONRequest = new JsonArrayRequest(Request.Method.GET, url + caminho, null,
+                new Response.Listener<JSONArray>(){
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        // display response
+                        Log.d("Response", response.toString());
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Error.Response", error.toString());
+                    }
+                }
+        ){
+            protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("id_nome", id_online+"");
+//                params.put("param2", num2);
+                return params;
+            };
+        };
+
+        fila.add(JSONRequest);
+
+
+
+//        Log.i("tamanhooo2222", eventos.size()+ "");
         return INSTANCIA.eventos;
     }
     public ArrayList<Grupo> getGrupos() {
-        Log.i("tamanhooo2222", eventos.size()+ "");
+//        Log.i("tamanhooo2222", eventos.size()+ "");
         return INSTANCIA.grupos;
     }
 

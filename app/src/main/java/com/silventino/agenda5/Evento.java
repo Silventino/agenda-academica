@@ -74,4 +74,12 @@ public class Evento implements Serializable{
     public int getId() {
         return id;
     }
+
+    public String getData(){
+        return (ano + "-" + mes + "-" + dia);
+    }
+
+    public String getHorario(){
+        return (hora + ":" + minuto + ":00");
+    }
 }

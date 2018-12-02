@@ -28,12 +28,20 @@ public class MainActivity extends AppCompatActivity
 //    private MaterialCalendarView calendario;
     private BancoDeDados bancoDeDados;
 
+    public static int id_online;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        Intent i = getIntent();
+        id_online = i.getIntExtra("id", -1);
+        if(id_online < 0){
+            Toast.makeText(this, "Algo está errado...", Toast.LENGTH_SHORT).show();
+        }
 
         // banco de dados
         bancoDeDados = BancoDeDados.getInstancia(getApplicationContext());
@@ -75,7 +83,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(MainActivity.this, AddTarefaActivity.class);
-//                i.putExtra("bancoDeDados", bancoDeDados);
+                i.putExtra("id", id_online);
                 startActivity(i);
             }
         });
@@ -157,7 +165,7 @@ public class MainActivity extends AppCompatActivity
                 Toast.makeText(this, "Função não implementada", Toast.LENGTH_SHORT);
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
