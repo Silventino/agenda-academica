@@ -60,23 +60,30 @@ public class ConteudoCalendario extends Fragment{
 
         // refresh nos dias decorados
 
-        ArrayList<Evento> eventos = BancoDeDados.getInstancia(getActivity().getApplicationContext()).getEventos();
+        BancoDeDados.getInstancia(getActivity().getApplicationContext()).getEventos(this);
+
+
+    }
+
+    public void refreshCalendar(ArrayList<Evento> eventos){
         for(Evento evento : eventos){
             decorador.addDate(evento.getCalendarDay());
         }
         calendario.invalidateDecorators();
 
-
     }
 
     public void refreshListaTarefas(CalendarDay data){
-        ArrayList<Evento> eventosDoDia = BancoDeDados.getInstancia(getActivity().getApplicationContext()).getEventosDoDia(data.getDay(), data.getMonth(), data.getYear());
+        Log.d("refreshLista", data.getDay() + "/" + data.getMonth());
+        BancoDeDados.getInstancia(getActivity().getApplicationContext()).getEventosDoDia(data.getDay(), data.getMonth(), data.getYear(), this);
+    }
+
+    public void getRetornoListaTarefas(ArrayList<Evento> eventosDoDia){
         Log.i("asdasdasd", eventosDoDia.toString());
         ListViewAdapterEvento lva = new ListViewAdapterEvento(eventosDoDia, calendario.getContext());
         listaTarefas.setAdapter(lva);
         lva.notifyDataSetChanged();
         setListViewHeightBasedOnChildren();
-
     }
 
     @Override

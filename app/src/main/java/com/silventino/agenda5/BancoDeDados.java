@@ -1,6 +1,7 @@
 package com.silventino.agenda5;
 
 import android.content.Context;
+import android.util.EventLog;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
@@ -69,7 +70,7 @@ public class BancoDeDados{
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.d("Error.Response", error.toString());
+                        Log.d("Error.Response4", error.toString());
                     }
                 }
         ){
@@ -107,7 +108,7 @@ public class BancoDeDados{
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.d("Error.Response", error.toString());
+                        Log.d("Error.Response5", error.toString());
                     }
                 }
         ){
@@ -151,7 +152,7 @@ public class BancoDeDados{
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.d("Error.Response", error.toString());
+                        Log.d("Error.Response6", error.toString());
                     }
                 }
         ){
@@ -171,14 +172,57 @@ public class BancoDeDados{
         this.grupos.add(g);
     }
 
-    public ArrayList<Evento> getEventosDoDia(int dia, int mes, int ano){
-        ArrayList<Evento> eventosDoDia = new ArrayList<>();
-        for(Evento evento : eventos){
-            if(evento.dataIgual(dia, mes, ano)){
-                eventosDoDia.add(evento);
-            }
-        }
-        return eventosDoDia;
+    public void getEventosDoDia(int dia, int mes, int ano, final ConteudoCalendario c){
+//        ArrayList<Evento> eventosDoDia = new ArrayList<>();
+//        for(Evento evento : eventos){
+//            if(evento.dataIgual(dia, mes, ano)){
+//                eventosDoDia.add(evento);
+//            }
+//        }
+//        return eventosDoDia;
+        String caminho = "/buscar/tarefas/data";
+        String data = Evento.getDataFromInts(dia, mes, ano);
+        JsonArrayRequest JSONRequest = new JsonArrayRequest(Request.Method.GET, url + caminho + "?dono_id=" + id_online + "&data=" + data, null,
+                new Response.Listener<JSONArray>(){
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        // display response
+                        Log.d("Response", response.toString());
+
+                        ArrayList<Evento> eventos = new ArrayList<>();
+
+                        for(int i = 0; i < response.length(); i++){
+                            try {
+                                JSONObject o = (JSONObject) response.get(i);
+                                int dia = Evento.getDiaFromData((String)o.get("data"));
+                                int mes = Evento.getMesFromData((String)o.get("data"));
+                                int ano = Evento.getAnoFromData((String)o.get("data"));
+                                int hora = Evento.getHoraFromHorario((String)o.get("horario"));
+                                int minuto = Evento.getMinutoFromHorario((String)o.get("horario"));
+                                String titulo = (String)o.get("titulo");
+                                String descricao = (String)o.get("descricao");
+                                int idDono = (int)o.get("dono_id");
+
+                                Evento evento = new Evento(dia,mes,ano,hora,minuto,titulo,descricao);
+                                eventos.add(evento);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        Log.d("eventos:", eventos.toString());
+                        c.getRetornoListaTarefas(eventos);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Error.Response2", error.toString());
+                    }
+                }
+        );
+
+        fila.add(JSONRequest);
+
     }
 
     public ArrayList<Grupo> getMeusGrupos(int idUsuario) {
@@ -202,37 +246,47 @@ public class BancoDeDados{
         return retorno;
     }
 
-    public ArrayList<Evento> getEventos() {
+    public ArrayList<Evento> getEventos(final ConteudoCalendario c) {
         String caminho = "/buscar/tarefas/dono";
-        JSONObject param = new JSONObject();
-        try {
-            param.put("id_dono", id_online);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        JsonArrayRequest JSONRequest = new JsonArrayRequest(Request.Method.GET, url + caminho, null,
+
+        JsonArrayRequest JSONRequest = new JsonArrayRequest(Request.Method.GET, url + caminho + "?dono_id=" + id_online, null,
                 new Response.Listener<JSONArray>(){
                     @Override
                     public void onResponse(JSONArray response) {
                         // display response
                         Log.d("Response", response.toString());
 
+                        ArrayList<Evento> eventos = new ArrayList<>();
+
+                        for(int i = 0; i < response.length(); i++){
+                            try {
+                                JSONObject o = (JSONObject) response.get(i);
+                                int dia = Evento.getDiaFromData((String)o.get("data"));
+                                int mes = Evento.getMesFromData((String)o.get("data"));
+                                int ano = Evento.getAnoFromData((String)o.get("data"));
+                                int hora = Evento.getHoraFromHorario((String)o.get("horario"));
+                                int minuto = Evento.getMinutoFromHorario((String)o.get("horario"));
+                                String titulo = (String)o.get("titulo");
+                                String descricao = (String)o.get("descricao");
+                                int idDono = (int)o.get("dono_id");
+
+                                Evento evento = new Evento(dia,mes,ano,hora,minuto,titulo,descricao);
+                                eventos.add(evento);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        c.refreshCalendar(eventos);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.d("Error.Response", error.toString());
+                        Log.d("Error.Response3", error.toString());
                     }
                 }
-        ){
-            protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("id_nome", id_online+"");
-//                params.put("param2", num2);
-                return params;
-            };
-        };
+        );
 
         fila.add(JSONRequest);
 

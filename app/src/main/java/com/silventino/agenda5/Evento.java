@@ -82,4 +82,36 @@ public class Evento implements Serializable{
     public String getHorario(){
         return (hora + ":" + minuto + ":00");
     }
+
+    public static String getDataFromInts(int dia, int mes, int ano){
+        return (ano + "-" + mes + "-" + dia);
+    }
+
+    public static int getDiaFromData(String data){
+        String[] partes = data.split("-");
+
+        return Integer.valueOf(partes[2]);
+    }
+    public static int getMesFromData(String data){
+        String[] partes = data.split("-");
+
+        return Integer.valueOf(partes[1]);
+    }
+    public static int getAnoFromData(String data){
+        String[] partes = data.split("-");
+
+        return Integer.valueOf(partes[0]);
+    }
+    public static int getHoraFromHorario(String horario){
+        String[] partes = horario.split(":");
+
+        return Integer.valueOf(partes[0]);
+
+    }
+    public static int getMinutoFromHorario(String horario){
+        String[] partes = horario.split(":");
+
+        return Integer.valueOf(partes[1]);
+    }
+
 }
