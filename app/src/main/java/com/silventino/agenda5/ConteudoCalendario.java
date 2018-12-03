@@ -75,8 +75,7 @@ public class ConteudoCalendario extends Fragment{
     }
 
     public void refreshCalendar(HashMap<String, ArrayList<Evento>> eventos){
-        Log.d("Cá estou!", "oia aqui");
-
+        Log.d("Cá estou!", eventos.toString());
         decorador.rebuild(eventos);
 
         calendario.invalidateDecorators();

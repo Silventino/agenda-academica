@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.EventLog;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -175,7 +176,7 @@ public class BancoDeDados{
                     public void onResponse(JSONArray response) {
                         // display response
                         Log.d("Caminhoo",url + caminho + "?dono_id=" + g.getId());
-                        Log.d("Response getEventos", response.toString());
+                        Log.d("Respo getEventosGrupo", response.toString());
 
                         ArrayList<Evento> eventos = new ArrayList<>();
 
@@ -231,15 +232,23 @@ public class BancoDeDados{
 
 
 
-    public void addEvento(final Evento e, final AddTarefaActivity activity){
+    public void addEvento(final Evento e, final AddTarefaActivity activity, boolean adicionarAGrupo){
         String caminho = "/adicionar/tarefa";
-        e.setDono_id(id_online);
         Map<String, String>  params = new HashMap<>();
         params.put("data", e.getData());
         params.put("horario", e.getHorario());
         params.put("titulo", e.getTitulo());
         params.put("descricao", e.getDescricao());
-        params.put("dono_id", id_online + "");
+
+        if(adicionarAGrupo){
+            Log.d("Box", "Dono id aqui dentro" + e.getDono_id());
+            params.put("dono_id", e.getDono_id() + "");
+        }
+        else{
+            Log.d("Box", "Entrei errado" + e.getDono_id());
+            params.put("dono_id", id_online + "");
+
+        }
         JsonObjectRequest JSONRequest = new JsonObjectRequest(Request.Method.POST, url + caminho, new JSONObject(params),
                 new Response.Listener<JSONObject>(){
                     @Override
@@ -299,15 +308,15 @@ public class BancoDeDados{
         return new ArrayList<Evento>();
     }
 
-    public ArrayList<Grupo> getMeusGrupos(int idUsuario) {
-        ArrayList<Grupo> gruposParticipando = new ArrayList<>();
-        for(Grupo grupo : grupos) {
-            if(grupo.participaDoGrupo()) {
-                gruposParticipando.add(grupo);
-            }
-        }
-        return gruposParticipando;
-    }
+//    public ArrayList<Grupo> getMeusGrupos(int idUsuario) {
+//        ArrayList<Grupo> gruposParticipando = new ArrayList<>();
+//        for(Grupo grupo : grupos) {
+//            if(grupo.participaDoGrupo()) {
+//                gruposParticipando.add(grupo);
+//            }
+//        }
+//        return gruposParticipando;
+//    }
 
     public static int getProximoIdEvento(){
         int retorno = proximoIdEvento;
@@ -331,6 +340,7 @@ public class BancoDeDados{
                         Log.d("Response getEventos", response.toString());
 
                         ArrayList<Evento> eventos = new ArrayList<>();
+                        eventosMap = new HashMap<>();
 
                         for(int i = 0; i < response.length(); i++){
                             try {
@@ -349,7 +359,6 @@ public class BancoDeDados{
                                 evento.setDono_id(o.getInt("dono_id"));
 
                                 eventos.add(evento);
-                                eventosMap = new HashMap<>();
                                 if(eventosMap.containsKey(evento.getData())){
                                     if(!eventosMap.get(evento.getData()).contains(evento)){
                                         eventosMap.get(evento.getData()).add(evento);
@@ -401,7 +410,7 @@ public class BancoDeDados{
                     @Override
                     public void onResponse(JSONObject response) {
                         // display response
-                        Log.d("Response addEvento", response.toString());
+                        Log.d("Response entrarGrupo", response.toString());
 
                         activity.receberRespostaEntrarGrupo();
 
@@ -431,7 +440,7 @@ public class BancoDeDados{
         params.put("usuario_id", id_online+"");
         params.put("grupo_id", g.getId()+"");
 
-        Log.d("TENTANDO ENTRAR: ", g.getNome() + " - " + g.getId());
+        Log.d("TENTANDO SAIR: ", g.getNome() + " - " + g.getId());
         JsonObjectRequest JSONRequest = new JsonObjectRequest(Request.Method.POST, url + caminho, new JSONObject(params),
                 new Response.Listener<JSONObject>(){
                     @Override
@@ -447,6 +456,7 @@ public class BancoDeDados{
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.d("Error.Response6", error.toString());
+                        Toast.makeText(activity, "Erro ao sair. Tente novamente...", Toast.LENGTH_SHORT).show();
                     }
                 }
         ){
@@ -471,7 +481,7 @@ public class BancoDeDados{
                     @Override
                     public void onResponse(JSONArray response) {
                         // display response
-                        Log.d("Response getEventos", response.toString());
+                        Log.d("Response getGrupos", response.toString());
 
                         ArrayList<Grupo> grupos = new ArrayList<>();
 
@@ -490,6 +500,57 @@ public class BancoDeDados{
                                 else{
                                     g.setParticipa(true);
                                 }
+
+                                grupos.add(g);
+
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+                        }
+                        activity.getListaGrupos(grupos);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Error.Response3", error.toString());
+                    }
+                }
+        );
+
+        fila.add(JSONRequest);
+
+
+//        return INSTANCIA.grupos;
+    }
+
+
+    public void getMeusGrupos(final AddTarefaActivity activity) {
+//        Log.i("tamanhooo2222", eventos.size()+ "");
+//        /buscar/grupos/id_ou_user?grupo_id=&usuario_id=11
+        String caminho = "/buscar/grupos/participante";
+
+        JsonArrayRequest JSONRequest = new JsonArrayRequest(Request.Method.GET, url + caminho + "?grupo_id=&usuario_id=" + id_online, null,
+                new Response.Listener<JSONArray>(){
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        // display response
+                        Log.d("Response MeusGrupos", response.toString());
+
+                        ArrayList<Grupo> grupos = new ArrayList<>();
+
+                        for(int i = 0; i < response.length(); i++){
+                            try {
+                                JSONObject o = (JSONObject) response.get(i);
+
+                                String nome = (String) o.get("nome");
+
+                                Grupo g = new Grupo(nome);
+                                int idGrupo = o.getInt("grupo_id");
+                                g.setId(idGrupo);
+
+                                g.setParticipa(true);
+
 
                                 grupos.add(g);
 

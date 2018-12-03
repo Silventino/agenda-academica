@@ -16,6 +16,7 @@ public class ListViewAdapterEvento extends ArrayAdapter<Evento> {
     private static class ViewHolder {
         TextView txtTitulo;
         TextView txtHora;
+        TextView txtDono;
         ImageView info;
     }
 
@@ -45,6 +46,7 @@ public class ListViewAdapterEvento extends ArrayAdapter<Evento> {
             convertView = inflater.inflate(R.layout.row_tarefas, pai, false);
             viewHolder.txtTitulo = convertView.findViewById(R.id.titulo);
             viewHolder.txtHora = convertView.findViewById(R.id.hora);
+            viewHolder.txtDono = convertView.findViewById(R.id.txtDono);
 //            viewHolder.info = convertView.findViewById(R.id.item_info);
 
             result=convertView;
@@ -67,6 +69,7 @@ public class ListViewAdapterEvento extends ArrayAdapter<Evento> {
         }
 
         viewHolder.txtHora.setText(evento.getHora() + ":" + minuto);
+        viewHolder.txtDono.setText(evento.getDono());
 //        viewHolder.info.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {

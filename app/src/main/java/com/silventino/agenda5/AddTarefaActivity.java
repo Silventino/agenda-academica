@@ -45,7 +45,7 @@ public class AddTarefaActivity extends AppCompatActivity implements DatePickerDi
     
     private int id_online;
 
-
+    private ArrayList<Grupo> grupos;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,8 +57,6 @@ public class AddTarefaActivity extends AppCompatActivity implements DatePickerDi
         if(id_online < 0){
             Toast.makeText(this, "Algo está errado...", Toast.LENGTH_SHORT).show();
         }
-
-        final int idGrupo = getIntent().getIntExtra("idGrupo", -1);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -73,9 +71,70 @@ public class AddTarefaActivity extends AppCompatActivity implements DatePickerDi
         campoData.setInputType(InputType.TYPE_NULL);
         btnAdicionar = findViewById(R.id.btnAdicionar);
 
-        // TODO fazer essa funcao receber um usuario cadastrado
-        final ArrayList<Grupo> grupos = BancoDeDados.getInstancia(getApplicationContext()).getMeusGrupos(-1);
+        grupos = new ArrayList<>();
 
+        // TODO fazer essa funcao receber um usuario cadastrado
+        BancoDeDados.getInstancia(getApplicationContext()).getMeusGrupos(this);
+
+
+
+        final AddTarefaActivity ponteiroThis = this;
+
+        btnAdicionar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(campoTitulo.getText().toString().equals("")) {
+                    Toast.makeText(view.getContext(), "O título não pode ser vazio", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(campoData.getText().toString().equals("")) {
+                    Toast.makeText(view.getContext(), "A data não pode ser vazio", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(campoHora.getText().toString().equals("")) {
+                    Toast.makeText(view.getContext(), "A hora não pode ser vazio", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(checkBox.isChecked()){
+                    Log.d("Box", "checada!");
+                    Grupo grupoSelecionado = grupos.get(seletorGrupos.getSelectedItemPosition());
+                    Evento e = criarEvento();
+                    e.setGrupo(grupoSelecionado);
+                    grupoSelecionado.addEvento(e);
+                    e.setDono_id(grupoSelecionado.getId());
+
+                    Log.d("Box", e.getDono_id()+"");
+                    BancoDeDados.getInstancia(getApplicationContext()).addEvento(e, ponteiroThis, true);
+                }
+                else{
+                    Log.d("Box", "não checada.");
+                    bancoDeDados.addEvento(criarEvento(), ponteiroThis, false);
+                }
+//                finish();
+            }
+        });
+
+
+        campoData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatePickerDialog datePicker = new DatePickerDialog(ponteiroThis, ponteiroThis, 2018, 10, 12);
+                datePicker.show();
+            }
+        });
+
+        campoHora.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TimePickerDialog timePicker = new TimePickerDialog(ponteiroThis, ponteiroThis, 20, 20, true);
+                timePicker.show();
+            }
+        });
+
+    }
+
+    public void getListaGrupos(ArrayList<Grupo> grupos){
+        this.grupos = grupos;
         ArrayList<String> nomeGrupos = new ArrayList<>();
         for(int i = 0; i < grupos.size(); i++) {
             nomeGrupos.add(grupos.get(i).getNome());
@@ -108,7 +167,7 @@ public class AddTarefaActivity extends AppCompatActivity implements DatePickerDi
             }
         });
 
-
+        final int idGrupo = getIntent().getIntExtra("idGrupo", -1);
         if(idGrupo > -1) {
             int indiceGrupoSelecionado = -1;
             checkBox.setChecked(true);
@@ -121,55 +180,6 @@ public class AddTarefaActivity extends AppCompatActivity implements DatePickerDi
             }
             seletorGrupos.setSelection(indiceGrupoSelecionado);
         }
-
-        final AddTarefaActivity ponteiroThis = this;
-
-        btnAdicionar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(campoTitulo.getText().toString().equals("")) {
-                    Toast.makeText(view.getContext(), "O título não pode ser vazio", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if(campoData.getText().toString().equals("")) {
-                    Toast.makeText(view.getContext(), "A data não pode ser vazio", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if(campoHora.getText().toString().equals("")) {
-                    Toast.makeText(view.getContext(), "A hora não pode ser vazio", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if(checkBox.isChecked()){
-                    Grupo grupoSelecionado = grupos.get(seletorGrupos.getSelectedItemPosition());
-                    Evento e = criarEvento();
-                    e.setGrupo(grupoSelecionado);
-                    grupoSelecionado.addEvento(e);
-                    BancoDeDados.getInstancia(getApplicationContext()).addEvento(e, ponteiroThis);
-                }
-                else{
-                    bancoDeDados.addEvento(criarEvento(), ponteiroThis);
-                }
-//                finish();
-            }
-        });
-
-
-        campoData.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DatePickerDialog datePicker = new DatePickerDialog(ponteiroThis, ponteiroThis, 2018, 10, 12);
-                datePicker.show();
-            }
-        });
-
-        campoHora.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                TimePickerDialog timePicker = new TimePickerDialog(ponteiroThis, ponteiroThis, 20, 20, true);
-                timePicker.show();
-            }
-        });
-
     }
 
     public void fechar(){

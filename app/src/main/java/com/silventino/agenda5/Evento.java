@@ -18,6 +18,9 @@ public class Evento implements Serializable{
     private int id;
     private int dono_id;
 
+    private String dono;
+
+
     public Evento(int dia, int mes, int ano, int hora, int minuto, String titulo, String descricao) {
         this.dia = dia;
         this.mes = mes;
@@ -28,6 +31,15 @@ public class Evento implements Serializable{
         this.descricao = descricao;
         this.id = -1;
         this.dono_id = -1;
+        this.dono = "";
+    }
+
+    public String getDono() {
+        return dono;
+    }
+
+    public void setDono(String dono) {
+        this.dono = dono;
     }
 
     public void setId(int id){
@@ -36,6 +48,9 @@ public class Evento implements Serializable{
 
     public void setDono_id(int id){
         this.dono_id = id;
+    }
+    public int getDono_id(){
+        return this.dono_id;
     }
 
 
