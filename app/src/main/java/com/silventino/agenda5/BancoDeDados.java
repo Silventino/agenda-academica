@@ -24,8 +24,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -46,7 +49,9 @@ public class BancoDeDados{
 
     private static BancoDeDados INSTANCIA = null;
     private RequestQueue fila;
-    private String url = "http://192.168.1.3:5000";
+    private String url = "http://192.168.43.134:5000";
+    private String url2 = "http://192.168.43.82:5000";
+    private int contador = 0;
 
     private int id_online = -1;
 
@@ -75,6 +80,14 @@ public class BancoDeDados{
 
     }
 
+    private String getUrl(){
+        this.contador++;
+        if(contador % 2 == 0){
+            return url;
+        }
+        return url2;
+    }
+
     public static BancoDeDados getInstancia(Context c) {
         if(INSTANCIA == null) {
             INSTANCIA = new BancoDeDados(c);
@@ -83,20 +96,50 @@ public class BancoDeDados{
         return INSTANCIA;
     }
 
-    public boolean addUsuario(final Usuario u){
+    public boolean addUsuario(final Usuario u, final CadastroActivity activity){
         this.usuarios.add(u);
-        String caminho = "/adicionar/usuario";
+
         Map<String, String>  params = new HashMap<>();
+
+        try {
+            String senha = u.getSenha();
+            MessageDigest hash = MessageDigest.getInstance("SHA-256");
+            byte messageDigestSenhaAdmin[] = hash.digest(senha.getBytes("UTF-8"));
+
+            StringBuilder hexStringSenha = new StringBuilder();
+            for (byte b : messageDigestSenhaAdmin) {
+                hexStringSenha.append(String.format("%02X", 0xFF & b));
+            }
+            String senhaCodificada = hexStringSenha.toString();
+
+            params.put("senha", senhaCodificada);
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        String caminho = "/adicionar/usuario";
         params.put("nome", u.getNome());
         params.put("login", u.getUsuario());
-        params.put("senha", u.getSenha());
-        JsonObjectRequest JSONRequest = new JsonObjectRequest(Request.Method.POST, url + caminho, new JSONObject(params),
+        JsonObjectRequest JSONRequest = new JsonObjectRequest(Request.Method.POST, getUrl() + caminho, new JSONObject(params),
                 new Response.Listener<JSONObject>(){
                     @Override
                     public void onResponse(JSONObject response) {
                         // display response
-//                        Log.d("Response", response.toString());
-                        //TODO fazer login auomatico
+                        Log.d("Response addUsuario", response.toString());
+
+                        try {
+                            int id = response.getInt("usuario_id");
+                            id_online = id;
+
+                            activity.recebeRetornoAddUsuario(id);
+
+                        } catch (JSONException e) {
+                            int id = -1;
+                            activity.recebeRetornoAddUsuario(id);
+                        }
                     }
                 },
                 new Response.ErrorListener() {
@@ -121,16 +164,41 @@ public class BancoDeDados{
         String caminho = "/login";
         Map<String, String>  params = new HashMap<>();
         params.put("login", login);
-        params.put("senha", senha);
-        JsonObjectRequest JSONRequest = new JsonObjectRequest(Request.Method.POST, url + caminho, new JSONObject(params),
+
+
+
+
+//        params.put("senha", senha);
+
+        try {
+            MessageDigest hash = MessageDigest.getInstance("SHA-256");
+            byte messageDigestSenha[] = hash.digest(senha.getBytes("UTF-8"));
+
+            StringBuilder hexStringSenha = new StringBuilder();
+            for (byte b : messageDigestSenha) {
+                hexStringSenha.append(String.format("%02X", 0xFF & b));
+            }
+            String senhaCodificada = hexStringSenha.toString();
+
+            params.put("senha", senhaCodificada);
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+
+        JsonObjectRequest JSONRequest = new JsonObjectRequest(Request.Method.POST, getUrl() + caminho, new JSONObject(params),
                 new Response.Listener<JSONObject>(){
                     @Override
                     public void onResponse(JSONObject response) {
                         // display response
-//                        Log.d("Response", response.toString());
+                        Log.d("Response Login", response.toString());
                         try {
                             int id = response.getInt("usuario_id");
                             id_online = id;
+
                             telaDeLogin.receberLogin(id);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -170,12 +238,12 @@ public class BancoDeDados{
     public void getEventosGrupo(final Grupo g, final VisualizarGrupoActivity v){
         final String caminho = "/buscar/tarefas/dono";
 
-        JsonArrayRequest JSONRequest = new JsonArrayRequest(Request.Method.GET, url + caminho + "?dono_id=" + g.getId(), null,
+        JsonArrayRequest JSONRequest = new JsonArrayRequest(Request.Method.GET, getUrl() + caminho + "?dono_id=" + g.getId(), null,
                 new Response.Listener<JSONArray>(){
                     @Override
                     public void onResponse(JSONArray response) {
                         // display response
-                        Log.d("Caminhoo",url + caminho + "?dono_id=" + g.getId());
+                        Log.d("Caminhoo",getUrl() + caminho + "?dono_id=" + g.getId());
                         Log.d("Respo getEventosGrupo", response.toString());
 
                         ArrayList<Evento> eventos = new ArrayList<>();
@@ -249,7 +317,7 @@ public class BancoDeDados{
             params.put("dono_id", id_online + "");
 
         }
-        JsonObjectRequest JSONRequest = new JsonObjectRequest(Request.Method.POST, url + caminho, new JSONObject(params),
+        JsonObjectRequest JSONRequest = new JsonObjectRequest(Request.Method.POST, getUrl() + caminho, new JSONObject(params),
                 new Response.Listener<JSONObject>(){
                     @Override
                     public void onResponse(JSONObject response) {
@@ -332,7 +400,7 @@ public class BancoDeDados{
     public void getEventos(final ConteudoCalendario c) {
         String caminho = "/buscar/tarefas/todos/dono";
 
-        JsonArrayRequest JSONRequest = new JsonArrayRequest(Request.Method.GET, url + caminho + "?dono_id=" + id_online, null,
+        JsonArrayRequest JSONRequest = new JsonArrayRequest(Request.Method.GET, getUrl() + caminho + "?dono_id=" + id_online, null,
                 new Response.Listener<JSONArray>(){
                     @Override
                     public void onResponse(JSONArray response) {
@@ -405,7 +473,7 @@ public class BancoDeDados{
         params.put("eh_administrador", 0+"");
 
         Log.d("TENTANDO ENTRAR: ", g.getNome() + " - " + g.getId());
-        JsonObjectRequest JSONRequest = new JsonObjectRequest(Request.Method.POST, url + caminho, new JSONObject(params),
+        JsonObjectRequest JSONRequest = new JsonObjectRequest(Request.Method.POST, getUrl() + caminho, new JSONObject(params),
                 new Response.Listener<JSONObject>(){
                     @Override
                     public void onResponse(JSONObject response) {
@@ -441,7 +509,7 @@ public class BancoDeDados{
         params.put("grupo_id", g.getId()+"");
 
         Log.d("TENTANDO SAIR: ", g.getNome() + " - " + g.getId());
-        JsonObjectRequest JSONRequest = new JsonObjectRequest(Request.Method.POST, url + caminho, new JSONObject(params),
+        JsonObjectRequest JSONRequest = new JsonObjectRequest(Request.Method.POST, getUrl() + caminho, new JSONObject(params),
                 new Response.Listener<JSONObject>(){
                     @Override
                     public void onResponse(JSONObject response) {
@@ -476,7 +544,7 @@ public class BancoDeDados{
 //        /buscar/grupos/id_ou_user?grupo_id=&usuario_id=11
         String caminho = "/buscar/grupos/id_ou_user";
 
-        JsonArrayRequest JSONRequest = new JsonArrayRequest(Request.Method.GET, url + caminho + "?grupo_id=&usuario_id=" + id_online, null,
+        JsonArrayRequest JSONRequest = new JsonArrayRequest(Request.Method.GET, getUrl() + caminho + "?grupo_id=&usuario_id=" + id_online, null,
                 new Response.Listener<JSONArray>(){
                     @Override
                     public void onResponse(JSONArray response) {
@@ -530,7 +598,7 @@ public class BancoDeDados{
 //        /buscar/grupos/id_ou_user?grupo_id=&usuario_id=11
         String caminho = "/buscar/grupos/participante";
 
-        JsonArrayRequest JSONRequest = new JsonArrayRequest(Request.Method.GET, url + caminho + "?grupo_id=&usuario_id=" + id_online, null,
+        JsonArrayRequest JSONRequest = new JsonArrayRequest(Request.Method.GET, getUrl() + caminho + "?grupo_id=&usuario_id=" + id_online, null,
                 new Response.Listener<JSONArray>(){
                     @Override
                     public void onResponse(JSONArray response) {

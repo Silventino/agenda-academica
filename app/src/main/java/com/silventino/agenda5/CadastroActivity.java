@@ -11,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -49,6 +50,7 @@ public class CadastroActivity extends AppCompatActivity{
     }
 
     private void setClickListeners(){
+        final CadastroActivity ponteiroThis = this;
         btnEnviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,9 +71,23 @@ public class CadastroActivity extends AppCompatActivity{
 
                 Usuario u = new Usuario(nome, usuario, senha);
 
-                bancoDeDados.addUsuario(u);
+                bancoDeDados.addUsuario(u, ponteiroThis);
             }
         });
+    }
+
+    public void recebeRetornoAddUsuario(int id){
+        if (id < 0) {
+            Toast.makeText(this, "Erro, nome de usuário já está sendo utilizado.", Toast.LENGTH_SHORT).show();
+
+        }
+        else{
+            Toast.makeText(this, "Usuário cadastrado com sucesso.", Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(CadastroActivity.this, MainActivity.class);
+            i.putExtra("id", id);
+            Log.d("OIA O USUARIO AQUI", id + "");
+            startActivity(i);
+        }
     }
 
 }
